@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
@@ -57,5 +58,9 @@ public class AutoController {
         }
     }
 
+    @GetMapping("/{all}")
+    public List<AutoDTO> obtenerAutos(){
+//        AutoDTO auto = service.obtenerAutos();
+    }
 
 }
