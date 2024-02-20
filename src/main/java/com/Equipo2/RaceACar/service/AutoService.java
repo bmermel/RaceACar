@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,9 +47,15 @@ public class AutoService {
 
     public List<AutoDTO> obtenerAutos (){
         List<Auto> autosList = repository.findAll();
-        return autosList.stream()
-                .map(auto -> modelMapper.map(auto, AutoDTO.class))
-                .collect(Collectors.toList());
+
+        if (autosList.isEmpty()) {
+            System.out.println("La lista está aún vacía");
+            return Collections.emptyList(); // Devuelve una lista vacía
+        } else {
+            return autosList.stream()
+                    .map(auto -> modelMapper.map(auto, AutoDTO.class))
+                    .collect(Collectors.toList());
+        }
     }
 
 }

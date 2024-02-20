@@ -58,9 +58,20 @@ public class AutoController {
         }
     }
 
-    @GetMapping("/{all}")
-    public List<AutoDTO> obtenerAutos(){
-//        AutoDTO auto = service.obtenerAutos();
+    @GetMapping("/all")
+    public ResponseEntity<List<AutoDTO>> obtenerAutos() {
+        try {
+            List<AutoDTO> autos = service.obtenerAutos();
+
+            if (autos.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            } else {
+                return ResponseEntity.ok(autos);
+            }
+        } catch (Exception ex) {
+            System.err.println("Error al obtener la lista de autos: " + ex.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
 }

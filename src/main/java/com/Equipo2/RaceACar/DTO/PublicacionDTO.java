@@ -1,2 +1,4 @@
-package com.Equipo2.RaceACar.DTO;public class PublicacionDTO {
+package com.Equipo2.RaceACar.DTO;
+
+public class PublicacionDTO {
 }

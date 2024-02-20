@@ -1,11 +1,18 @@
 package com.Equipo2.RaceACar.model;
 
-import com.Equipo2.RaceACar.DTO.TipoDeCaja;
+import com.Equipo2.RaceACar.model.Enums.TipoDeAuto;
+import com.Equipo2.RaceACar.model.Enums.TipoDeCaja;
+import com.Equipo2.RaceACar.model.Enums.Traccion;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -35,7 +42,33 @@ public class Auto {
     @Column(name = "Tipo de caja", nullable = false)
 
     private TipoDeCaja tipoDeCaja;
-    @Column(name = "Auto Ocupado", nullable = false)
 
-    private Boolean ocupado;
+    @Column(name = "Caballos de fuerza", nullable = false)
+    private Integer caballosDeFuerza;
+    @Column(name = "Tracción", nullable = false)
+
+    private Traccion traccion;
+    @Column(name = "Tipo de Auto", nullable = false)
+
+    private TipoDeAuto tipoDeAuto;
+    @Column(name = "Auto disponible", nullable = false)
+
+    private Boolean disponible;
+
+
+    @ManyToMany
+    @JoinTable(
+            name = "auto_ubicacion",
+            joinColumns = @JoinColumn(name = "auto_id"),
+            inverseJoinColumns = @JoinColumn(name = "ubicacion_id")
+    )
+    private List<Ubicacion> ubicaciones = new ArrayList<>();
+/*    @ManyToMany
+    @JoinTable(
+            name = "auto_ubicacion",
+            joinColumns = @JoinColumn(name = "auto_id"),
+            inverseJoinColumns = @JoinColumn(name = "ubicacion_id")
+    )
+    private Set<Ubicacion> ubicaciones = new HashSet<>();*/
+
 }
