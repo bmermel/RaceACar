@@ -21,5 +21,5 @@ public class AutoDTO {
     private Integer caballosDeFuerza;
     private Traccion traccion;
     private TipoDeAuto tipoDeAuto;
-    private Boolean ocupado;
+    private Boolean disponible;
 }
