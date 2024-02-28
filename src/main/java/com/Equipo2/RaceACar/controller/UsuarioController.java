@@ -1,6 +1,7 @@
 package com.Equipo2.RaceACar.controller;
 
 import com.Equipo2.RaceACar.DTO.UsuarioDTO;
+import com.Equipo2.RaceACar.DTO.UsuarioSinPassDTO;
 import com.Equipo2.RaceACar.service.AutoService;
 import com.Equipo2.RaceACar.service.UsuarioService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,7 +26,7 @@ public class UsuarioController {
     public ResponseEntity<?> buscarUsuarioPorEmail(@PathVariable String email) {
         try {
             System.out.println(email);
-            UsuarioDTO usuarioDTO = service.buscarPorEmail(email);
+            UsuarioSinPassDTO usuarioDTO = service.buscarPorEmail(email);
             return ResponseEntity.ok(usuarioDTO);
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario con el correo electrónico " + email + " no encontrado");

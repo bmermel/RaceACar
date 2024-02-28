@@ -48,6 +48,7 @@ public class Usuario  implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (rolUsuario != null && rolUsuario.getRol() != null)
         {
+            System.out.println(rolUsuario.getRol());
         return rolUsuario.getRol().getAuthorities();
         }
         else {

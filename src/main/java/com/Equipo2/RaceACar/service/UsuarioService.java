@@ -1,6 +1,7 @@
 package com.Equipo2.RaceACar.service;
 
 import com.Equipo2.RaceACar.DTO.UsuarioDTO;
+import com.Equipo2.RaceACar.DTO.UsuarioSinPassDTO;
 import com.Equipo2.RaceACar.User.Roles;
 import com.Equipo2.RaceACar.User.Usuario;
 import com.Equipo2.RaceACar.model.RolUsuario;
@@ -35,11 +36,11 @@ public class UsuarioService {
     @Autowired
     private UserDetailsService userDetailsService;
 
-    public UsuarioDTO buscarPorEmail(String email) {
+    public UsuarioSinPassDTO buscarPorEmail(String email) {
         Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail(email);
         if (usuarioOptional.isPresent()) {
             Usuario usuario = usuarioOptional.get();
-            return mapper.convertValue(usuario, UsuarioDTO.class);
+            return mapper.convertValue(usuario, UsuarioSinPassDTO.class);
         } else {
             throw new NoSuchElementException("Usuario con el correo electrónico " + email + " no encontrado");
         }
