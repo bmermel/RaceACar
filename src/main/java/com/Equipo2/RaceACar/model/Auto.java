@@ -57,6 +57,9 @@ public class Auto {
 
     private Boolean disponible;
 
+    @Column(name = "valor", nullable = false)
+    private Double valor;
+
     @OneToMany(mappedBy = "auto")
     @JsonIgnore
     private List<Items> items = new ArrayList<>();
@@ -68,6 +71,8 @@ public class Auto {
             inverseJoinColumns = @JoinColumn(name = "ubicacion_id")
     )
     private List<Ubicacion> ubicaciones = new ArrayList<>();
+
+
 /*    @ManyToMany
     @JoinTable(
             name = "auto_ubicacion",

@@ -10,22 +10,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class AutoDTO {
+public class CrearAutoDTO {
     private Long id;
     private String marca;
     private String modelo;
-    private String color;
-
     private Long idCategoria;
+    private String color;
     private int anio;
     private int capacidad;
     private TipoDeCaja tipoDeCaja;
     private Integer caballosDeFuerza;
     private Traccion traccion;
     private Combustion combustion;
-
+    private Boolean disponible;
+    private Double valor;
     private List<Items> items = new ArrayList<>();
 
-    private Double valor;
-    private Boolean disponible;
 }

@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -27,14 +28,22 @@ public class AdminService {
     private UserDetailsService userDetailsService;
 
     @Transactional
-    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN')")
     public void asignarRolUsuario(String email) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_SUPER_ADMIN") || authority.getAuthority().equals("ROLE_ADMIN"))) {
         cambiarRolUsuario(email, Roles.USER);
+        }
     }
     @Transactional
     @PreAuthorize("hasRole('SUPER_ADMIN')")
     public void asignarRolAdmin(String email) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_SUPER_ADMIN")))
+        {
         cambiarRolUsuario(email, Roles.ADMIN);
+        }
     }
 
     private void cambiarRolUsuario(String email, Roles newRole) {

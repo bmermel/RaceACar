@@ -22,7 +22,6 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
-
 public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -40,6 +39,7 @@ public class UsuarioService {
         Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail(email);
         if (usuarioOptional.isPresent()) {
             Usuario usuario = usuarioOptional.get();
+            System.out.println(usuario.getRolUsuario().getRol().getAuthorities());
             return mapper.convertValue(usuario, UsuarioSinPassDTO.class);
         } else {
             throw new NoSuchElementException("Usuario con el correo electrónico " + email + " no encontrado");
