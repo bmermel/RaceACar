@@ -15,7 +15,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UsuarioDTO {
-    private String nombreCompleto;
+    private String nombre;
+    private String apellido;
     private String email;
     @JsonProperty
     private String password;
@@ -23,7 +24,7 @@ public class UsuarioDTO {
 
     private String documento;
 
-    //private RolUsuario rol;
+    private RolUsuarioDTO rolUsuarioDTO;
 
 
 

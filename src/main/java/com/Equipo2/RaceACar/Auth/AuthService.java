@@ -6,6 +6,7 @@ import com.Equipo2.RaceACar.User.Roles;
 import com.Equipo2.RaceACar.User.Usuario;
 import com.Equipo2.RaceACar.model.RolUsuario;
 import com.Equipo2.RaceACar.repository.UsuarioRepository;
+import com.Equipo2.RaceACar.service.RolUsuarioService;
 import com.Equipo2.RaceACar.service.UsuarioService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,8 @@ public class AuthService {
     private final PasswordEncoder encoder;
     @Autowired
     private final UsuarioService usuarioService;
+    @Autowired
+    private final RolUsuarioService rolUsuarioService;
     @Autowired
     private final UsuarioRepository usuarioRepository;
     @Autowired
@@ -52,21 +55,18 @@ public class AuthService {
         String encryptedPassword = encoder.encode(request.password);
 
 
-        // Obtener el rol correspondiente
-        //Roles rol = Roles.USER; // Aquí asigna el rol adecuado según tu lógica
-
-        // Crear un objeto RolUsuario con el rol obtenido
-        //RolUsuario rolUsuario = new RolUsuario();
-        //rolUsuario.setRol(rol);
 
         UsuarioDTO usuarioDTO = UsuarioDTO.builder()
-                .nombreCompleto(request.nombreCompleto)
+                .nombre(request.nombre)
+                .apellido(request.apellido)
                 .email(request.email)
                 .password(encryptedPassword)
                 .documento(request.documento)
                 .telefono(request.telefono)
-                //.rol(rolUsuario)
+                .rolUsuarioDTO(rolUsuarioService.buscarRolUsuarioDTO(1L))
                 .build();
+        System.out.println(rolUsuarioService.buscarRolUsuario(1L));
+        System.out.println(usuarioDTO.toString());
         usuarioService.guardarUsuario(usuarioDTO);
         UserDetails user = mapper.convertValue(usuarioDTO, Usuario.class);
         return AuthResponse.builder()

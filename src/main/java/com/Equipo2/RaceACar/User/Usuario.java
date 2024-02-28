@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Collections;
 
 @Entity
 @Getter
@@ -21,8 +22,11 @@ public class Usuario  implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nombre completo", nullable = false)
-    private String nombreCompleto;
+    @Column(name = "nombre", nullable = false)
+    private String nombre;
+
+    @Column(name = "apellido", nullable = false)
+    private String apellido;
 
     @Column(name = "email", nullable = false)
     private String email;
@@ -36,18 +40,24 @@ public class Usuario  implements UserDetails {
     @Column(name = "documento", nullable = false)
     @JsonProperty
     private String documento;
-    @JoinColumn(name = "rolUsuario_id",nullable = true)
+    @JoinColumn(name = "rolUsuario_id", nullable = false)
     @ManyToOne(cascade = CascadeType.PERSIST)
     private RolUsuario rolUsuario;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (rolUsuario != null && rolUsuario.getRol() != null)
+        {
         return rolUsuario.getRol().getAuthorities();
+        }
+        else {
+            return Collections.emptyList();
+        }
     }
 
     @Override
     public String getUsername() {
-        return nombreCompleto;
+        return email;
     }
 
     @Override

@@ -15,7 +15,7 @@ import java.util.Map;
 
 @Service
 public class JwtService {
-    @Value("${secret.key}")
+    @Value("${secretkey}")
     private String secretKey;
     public String getToken(UserDetails user){
         return getToken(new HashMap<>(), user);

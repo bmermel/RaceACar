@@ -24,13 +24,18 @@ public class RolUsuarioService {
         RolUsuario rolUsuario = mapper.convertValue(rolUsuarioDto, RolUsuario.class);
         rolUsuarioRepository.save(rolUsuario);
     }
-    public RolUsuarioDTO buscarRolUsuario(Long idRolUsuario) {
+    public RolUsuarioDTO buscarRolUsuarioDTO(Long idRolUsuario) {
         Optional<RolUsuario> rolUsuario =  rolUsuarioRepository.findById(idRolUsuario);
         RolUsuarioDTO rolUsuarioDto = null;
         if(rolUsuario.isPresent()){
             rolUsuarioDto = mapper.convertValue(rolUsuario, RolUsuarioDTO.class);
         }
         return rolUsuarioDto;
+    }
+    public RolUsuario buscarRolUsuario(Long idRolUsuario) {
+        Optional<RolUsuario> rolUsuario =  rolUsuarioRepository.findById(idRolUsuario);
+
+        return rolUsuario.orElse(null);
     }
 
 }

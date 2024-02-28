@@ -17,9 +17,14 @@ public class UsuarioService {
     @Autowired
     private ObjectMapper mapper;
     @Autowired
+    private RolUsuarioService rolUsuarioService;
+
+    @Autowired
     private RolUsuarioRepository rolUsuarioRepository;
     public void guardarUsuario(UsuarioDTO usuarioDTO) {
+        System.out.println(usuarioDTO);
         Usuario usuario = mapper.convertValue(usuarioDTO, Usuario.class);
+        usuario.setRolUsuario(rolUsuarioService.buscarRolUsuario(1L));
         usuarioRepository.save(usuario);
 
 
