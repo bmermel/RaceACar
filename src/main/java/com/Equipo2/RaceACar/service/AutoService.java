@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -56,6 +57,9 @@ public class AutoService {
                     .map(auto -> modelMapper.map(auto, AutoDTO.class))
                     .collect(Collectors.toList());
         }
+    }
+    public List<Auto> findAutosDisponiblesEntreFechas(LocalDate fechaInicio, LocalDate fechaFin) {
+        return repository.findDisponibleBetweenFechas(fechaInicio, fechaFin);
     }
 
 }

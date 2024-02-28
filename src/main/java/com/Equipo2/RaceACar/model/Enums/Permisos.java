@@ -1,4 +1,4 @@
-package com.crece.crece.model.enums;
+package com.Equipo2.RaceACar.model.Enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

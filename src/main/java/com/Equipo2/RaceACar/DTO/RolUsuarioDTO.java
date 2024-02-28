@@ -1,11 +1,11 @@
-package com.crece.crece.model.dto;
+package com.Equipo2.RaceACar.DTO;
 
-import com.crece.crece.model.enums.Roles;
+import com.Equipo2.RaceACar.User.Roles;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RolUsuarioDto {
+public class RolUsuarioDTO {
     private Roles rol;
 }

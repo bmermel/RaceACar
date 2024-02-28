@@ -1,5 +1,6 @@
 package com.Equipo2.RaceACar.model;
 
+import com.Equipo2.RaceACar.DTO.ReservaDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,6 +23,6 @@ public class ItemsExtras {
     private String categoria;
 
     @ManyToOne
-    @JoinColumn(name = "publicacion_id", nullable = false)
-    private Publicacion publicacion;
+    @JoinColumn(name = "reserva_id", nullable = false)
+    private Reserva reserva;
 }

@@ -1,6 +1,7 @@
 package com.Equipo2.RaceACar.model;
 
-import com.Equipo2.RaceACar.model.Enums.Roles;
+import com.Equipo2.RaceACar.User.Roles;
+import com.Equipo2.RaceACar.User.Usuario;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

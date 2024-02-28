@@ -1,10 +1,9 @@
-package com.crece.crece.service;
+package com.Equipo2.RaceACar.service;
 
-import com.crece.crece.model.RolUsuario;
-import com.crece.crece.model.TipoUsuario;
-import com.crece.crece.model.dto.RolUsuarioDto;
-import com.crece.crece.model.dto.TipoUsuarioDto;
-import com.crece.crece.repository.IRolUsuarioRepository;
+
+import com.Equipo2.RaceACar.DTO.RolUsuarioDTO;
+import com.Equipo2.RaceACar.model.RolUsuario;
+import com.Equipo2.RaceACar.repository.RolUsuarioRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,29 +12,25 @@ import java.util.Optional;
 
 @Service
 public class RolUsuarioService {
-    private IRolUsuarioRepository rolUsuarioRepository;
+    private RolUsuarioRepository rolUsuarioRepository;
     private ObjectMapper mapper;
 
     @Autowired
-    public RolUsuarioService(IRolUsuarioRepository rolUsuarioRepository, ObjectMapper mapper) {
+    public RolUsuarioService(RolUsuarioRepository rolUsuarioRepository, ObjectMapper mapper) {
         this.rolUsuarioRepository = rolUsuarioRepository;
         this.mapper = mapper;
     }
-    public void guardarRolusuario(RolUsuarioDto rolUsuarioDto){
+    public void guardarRolusuario(RolUsuarioDTO rolUsuarioDto){
         RolUsuario rolUsuario = mapper.convertValue(rolUsuarioDto, RolUsuario.class);
         rolUsuarioRepository.save(rolUsuario);
     }
-    public RolUsuarioDto buscarRolUsuario(Long idRolUsuario) {
+    public RolUsuarioDTO buscarRolUsuario(Long idRolUsuario) {
         Optional<RolUsuario> rolUsuario =  rolUsuarioRepository.findById(idRolUsuario);
-        RolUsuarioDto rolUsuarioDto = null;
+        RolUsuarioDTO rolUsuarioDto = null;
         if(rolUsuario.isPresent()){
-            rolUsuarioDto = mapper.convertValue(rolUsuario, RolUsuarioDto.class);
+            rolUsuarioDto = mapper.convertValue(rolUsuario, RolUsuarioDTO.class);
         }
         return rolUsuarioDto;
     }
-    public RolUsuario convertirDtoAClase(RolUsuarioDto rolUsuarioDto){
-        return mapper.convertValue(rolUsuarioDto, RolUsuario.class);
-    }
-
 
 }

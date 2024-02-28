@@ -3,6 +3,7 @@ package com.Equipo2.RaceACar.model;
 import com.Equipo2.RaceACar.model.Enums.TipoDeAuto;
 import com.Equipo2.RaceACar.model.Enums.TipoDeCaja;
 import com.Equipo2.RaceACar.model.Enums.Traccion;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,6 +32,9 @@ public class Auto {
     @Column(name = "modelo", nullable = false)
     private String modelo;
 
+    @ManyToOne
+    @JoinColumn(name = "categoria_id", nullable = false)
+    private Categoria categoria;
 
     @Column(name = "color", nullable = false)
     private String color;
@@ -55,6 +59,9 @@ public class Auto {
 
     private Boolean disponible;
 
+    @OneToMany(mappedBy = "auto")
+    @JsonIgnore
+    private List<Reserva> reservas = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
