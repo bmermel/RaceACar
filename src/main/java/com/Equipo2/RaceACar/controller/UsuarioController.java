@@ -24,6 +24,7 @@ public class UsuarioController {
     @GetMapping("/{email}")
     public ResponseEntity<?> buscarUsuarioPorEmail(@PathVariable String email) {
         try {
+            System.out.println(email);
             UsuarioDTO usuarioDTO = service.buscarPorEmail(email);
             return ResponseEntity.ok(usuarioDTO);
         } catch (NoSuchElementException e) {

@@ -1,12 +1,8 @@
 package com.Equipo2.RaceACar.DTO;
 
-import com.Equipo2.RaceACar.model.Enums.TipoDeAuto;
+import com.Equipo2.RaceACar.model.Enums.Combustion;
 import com.Equipo2.RaceACar.model.Enums.TipoDeCaja;
 import com.Equipo2.RaceACar.model.Enums.Traccion;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.Data;
 
 @Data
@@ -20,6 +16,6 @@ public class AutoDTO {
     private TipoDeCaja tipoDeCaja;
     private Integer caballosDeFuerza;
     private Traccion traccion;
-    private TipoDeAuto tipoDeAuto;
+    private Combustion combustion;
     private Boolean disponible;
 }

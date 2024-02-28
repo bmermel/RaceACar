@@ -11,8 +11,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Items_Incluidos")
-public class ItemsIncluidos {
+@Table(name = "Items")
+public class Items {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,9 +21,17 @@ public class ItemsIncluidos {
     @Column(name = "categoria", nullable = false)
     private String categoria;
 
+    @Column(name = "item_incluido", nullable = false)
+    private Boolean incluido;
+
+    @Column(name = "precio", nullable = false)
+    private Double precio;
+
     @ManyToOne
-    @JoinColumn(name = "reserva_id", nullable = false)
-    private Reserva reserva;
+    @JoinColumn(name = "auto_id", nullable = false)
+    private Auto auto;
+
+
 }
 
 

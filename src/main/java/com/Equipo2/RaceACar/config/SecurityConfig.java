@@ -1,6 +1,7 @@
 package com.Equipo2.RaceACar.config;
 
 import com.Equipo2.RaceACar.JWT.JwtAuthenticationFilter;
+import com.Equipo2.RaceACar.User.Roles;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -34,7 +35,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authRequest ->
                         authRequest
                         .requestMatchers("/auth/**").permitAll()
-                        .anyRequest().authenticated()
+                        //.requestMatchers("/usuarios/**").authenticated()
+                        .anyRequest().permitAll()
 
 
                 )                .sessionManagement(sessionManager -> sessionManager

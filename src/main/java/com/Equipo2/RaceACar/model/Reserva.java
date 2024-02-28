@@ -28,14 +28,8 @@ public class Reserva {
     private LocalDate fechaComienzo;
     @Column(name = "Fecha_fin", nullable = false)
     private LocalDate fechaFin;
-    @OneToMany(mappedBy = "reserva")
-    private List<ItemsIncluidos> incluidos;
-    @OneToMany(mappedBy = "reserva")
-    private List<ItemsExtras> extras;
+
     @Column(name = "Forma_de_pago", nullable = false)
     private String formaDePago;
 
-//    @Column(name = "Valor", nullable = false)
-
-    //  private Integer valor; CREO Q VA EN AUTO
 }

@@ -1,6 +1,6 @@
 package com.Equipo2.RaceACar.model;
 
-import com.Equipo2.RaceACar.model.Enums.TipoDeAuto;
+import com.Equipo2.RaceACar.model.Enums.Combustion;
 import com.Equipo2.RaceACar.model.Enums.TipoDeCaja;
 import com.Equipo2.RaceACar.model.Enums.Traccion;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -11,9 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -52,16 +50,16 @@ public class Auto {
     @Column(name = "Tracción", nullable = false)
 
     private Traccion traccion;
-    @Column(name = "Tipo de Auto", nullable = false)
+    @Column(name = "Tipo_de_combustion", nullable = false)
 
-    private TipoDeAuto tipoDeAuto;
+    private Combustion combustion;
     @Column(name = "Auto disponible", nullable = false)
 
     private Boolean disponible;
 
     @OneToMany(mappedBy = "auto")
     @JsonIgnore
-    private List<Reserva> reservas = new ArrayList<>();
+    private List<Items> items = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(

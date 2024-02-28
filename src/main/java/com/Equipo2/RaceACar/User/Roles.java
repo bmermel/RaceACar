@@ -18,8 +18,15 @@ public enum Roles {
     ),
     USER(            Set.of(
             Permisos.USER_UPDATE,Permisos.USER_PATCH,Permisos.USER_DELETE,Permisos.USER_CREATE,Permisos.USER_READ
-    ))
-    ;
+    )),
+    SUPER_ADMIN(
+            Set.of(
+                    Permisos.ADMIN_READ, Permisos.ADMIN_UPDATE, Permisos.ADMIN_CREATE,
+                    Permisos.ADMIN_DELETE, Permisos.ADMIN_PATCH, Permisos.USER_UPDATE,
+                    Permisos.USER_PATCH, Permisos.USER_DELETE, Permisos.USER_CREATE,
+                    Permisos.USER_READ, Permisos.ADMIN_DELETE_ADMIN
+            )
+    );
 
     @Getter
     private final Set<Permisos> permisosSet;

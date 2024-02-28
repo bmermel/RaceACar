@@ -63,7 +63,7 @@ public class AuthService {
                 .password(encryptedPassword)
                 .documento(request.documento)
                 .telefono(request.telefono)
-                .rolUsuarioDTO(rolUsuarioService.buscarRolUsuarioDTO(1L))
+                .rolUsuario(rolUsuarioService.buscarRolUsuario(1L))
                 .build();
         System.out.println(rolUsuarioService.buscarRolUsuario(1L));
         System.out.println(usuarioDTO.toString());

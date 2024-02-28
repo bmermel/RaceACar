@@ -1,2 +1,4 @@
-package com.Equipo2.RaceACar.controller;public class CategoriaController {
+package com.Equipo2.RaceACar.controller;
+
+public class CategoriaController {
 }
