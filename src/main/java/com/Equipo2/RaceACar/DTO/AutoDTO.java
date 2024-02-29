@@ -16,7 +16,7 @@ public class AutoDTO {
     private String modelo;
     private String color;
 
-    private String idCategoria;
+    private String Categoria;
     private int anio;
     private int capacidad;
     private TipoDeCaja tipoDeCaja;

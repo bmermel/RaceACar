@@ -18,7 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @RequiredArgsConstructor
-@EnableAsync
+@EnableAsyncgit
 public class ApplicationConfig {
     @Autowired
     private final UsuarioRepository usuarioRepository;
