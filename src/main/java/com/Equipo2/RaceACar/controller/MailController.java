@@ -1,0 +1,27 @@
+package com.Equipo2.RaceACar.controller;
+
+import com.Equipo2.RaceACar.Exceptions.MailSendingException;
+import com.Equipo2.RaceACar.service.MailService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/mail")
+@RequiredArgsConstructor
+@CrossOrigin(origins = "*")
+public class MailController {
+    @Autowired
+    private final MailService mailService;
+    @GetMapping("/resend-mail")
+    public ResponseEntity<String> resendMail(@RequestParam String email) {
+        try {
+            mailService.sendMail(email);
+            return ResponseEntity.ok("Correo reenviado exitosamente a " + email);
+        } catch (MailSendingException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al reenviar el correo electrónico: " + e.getMessage());
+        }
+    }
+}

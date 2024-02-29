@@ -6,9 +6,11 @@ import com.Equipo2.RaceACar.User.Roles;
 import com.Equipo2.RaceACar.User.Usuario;
 import com.Equipo2.RaceACar.model.RolUsuario;
 import com.Equipo2.RaceACar.repository.UsuarioRepository;
+import com.Equipo2.RaceACar.service.MailService;
 import com.Equipo2.RaceACar.service.RolUsuarioService;
 import com.Equipo2.RaceACar.service.UsuarioService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,6 +19,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.io.UnsupportedEncodingException;
 
 
 @Service
@@ -36,6 +40,8 @@ public class AuthService {
     private final ObjectMapper mapper;
     @Autowired
     private final AuthenticationManager authenticationManager;
+    @Autowired
+    private final MailService mailService;
 
 
     public AuthResponse login(LoginRequest request) {
@@ -51,7 +57,7 @@ public class AuthService {
 
     }
 
-    public AuthResponse register(RegisterRequest request) {
+    public AuthResponse register(RegisterRequest request) throws MessagingException, UnsupportedEncodingException {
         String encryptedPassword = encoder.encode(request.password);
 
 
@@ -69,6 +75,7 @@ public class AuthService {
         System.out.println(usuarioDTO.toString());
         usuarioService.guardarUsuario(usuarioDTO);
         UserDetails user = mapper.convertValue(usuarioDTO, Usuario.class);
+        mailService.sendMail(usuarioDTO.getEmail());
         return AuthResponse.builder()
                 .token(jwtService.getToken(user))
                 .build();
