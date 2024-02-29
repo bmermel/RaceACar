@@ -4,6 +4,7 @@ import com.Equipo2.RaceACar.model.Enums.Combustion;
 import com.Equipo2.RaceACar.model.Enums.TipoDeCaja;
 import com.Equipo2.RaceACar.model.Enums.Traccion;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -61,7 +62,7 @@ public class Auto {
     private Double valor;
 
     @OneToMany(mappedBy = "auto")
-    @JsonIgnore
+    @JsonIgnoreProperties("auto")
     private List<Items> items = new ArrayList<>();
 
     @ManyToMany
