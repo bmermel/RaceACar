@@ -1,5 +1,6 @@
 package com.Equipo2.RaceACar.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,6 +30,7 @@ public class Items {
 
     @ManyToOne
     @JoinColumn(name = "auto_id", nullable = false)
+    @JsonIgnore
     private Auto auto;
 
 
