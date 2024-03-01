@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class MailController {
-    @Autowired
     private final MailService mailService;
-    @GetMapping("/resend-mail")
-    public ResponseEntity<String> resendMail(@PathVariable String email) {
+
+    @PostMapping("/resend-mail")
+    public ResponseEntity<String> resendMail(@RequestBody String email) {
         System.out.println(email);
         try {
             mailService.sendMail(email);
