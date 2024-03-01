@@ -16,7 +16,8 @@ public class MailController {
     @Autowired
     private final MailService mailService;
     @GetMapping("/resend-mail")
-    public ResponseEntity<String> resendMail(@RequestParam String email) {
+    public ResponseEntity<String> resendMail(@PathVariable String email) {
+        System.out.println(email);
         try {
             mailService.sendMail(email);
             return ResponseEntity.ok("Correo reenviado exitosamente a " + email);
