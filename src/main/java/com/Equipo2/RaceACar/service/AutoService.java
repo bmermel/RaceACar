@@ -68,17 +68,9 @@ public class AutoService {
         }
     }
 
-    public List<AutoDTO> obtenerAutos (){
-        List<Auto> autosList = repository.findAll();
+    public List<Auto> obtenerAutos (){
+        return repository.findAll();
 
-        if (autosList.isEmpty()) {
-            System.out.println("La lista está aún vacía");
-            return Collections.emptyList(); // Devuelve una lista vacía
-        } else {
-            return autosList.stream()
-                    .map(auto -> modelMapper.map(auto, AutoDTO.class))
-                    .collect(Collectors.toList());
-        }
     }
     public List<Auto> findAutosDisponiblesEntreFechas(LocalDate fechaInicio, LocalDate fechaFin) {
         return repository.findDisponibleBetweenFechas(fechaInicio, fechaFin);
