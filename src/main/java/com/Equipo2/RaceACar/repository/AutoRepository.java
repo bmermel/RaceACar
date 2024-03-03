@@ -18,4 +18,6 @@ public interface AutoRepository extends JpaRepository<Auto, Long> {
             "AND (:fechaInicio BETWEEN r.fechaComienzo AND r.fechaFin " +
             "OR :fechaFin BETWEEN r.fechaComienzo AND r.fechaFin))")
     List<Auto> findDisponibleBetweenFechas(@Param("fechaInicio") LocalDate fechaInicio, @Param("fechaFin") LocalDate fechaFin);
+    List<Auto> findByDisponibleTrue();
+
 }

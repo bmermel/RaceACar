@@ -2,6 +2,7 @@ package com.Equipo2.RaceACar.service;
 
 import com.Equipo2.RaceACar.DTO.AutoDTO;
 import com.Equipo2.RaceACar.DTO.CrearAutoDTO;
+import com.Equipo2.RaceACar.Exceptions.MailSendingException;
 import com.Equipo2.RaceACar.model.Auto;
 import com.Equipo2.RaceACar.repository.AutoRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -62,6 +63,12 @@ public class AutoService {
     public List<Auto> findAutosDisponiblesEntreFechas(LocalDate fechaInicio, LocalDate fechaFin) {
         return repository.findDisponibleBetweenFechas(fechaInicio, fechaFin);
     }
-
+    public List<Auto> obtenerAutosDisponibles() {
+        List<Auto> autosDisponibles = repository.findByDisponibleTrue();
+        if (autosDisponibles.isEmpty()) {
+            throw new MailSendingException.ResourceNotFoundException("No se encontraron autos disponibles");
+        }
+        return autosDisponibles;
+    }
 }
 

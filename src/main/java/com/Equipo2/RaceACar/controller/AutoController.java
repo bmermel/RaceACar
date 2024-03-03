@@ -2,6 +2,8 @@ package com.Equipo2.RaceACar.controller;
 
 import com.Equipo2.RaceACar.DTO.AutoDTO;
 import com.Equipo2.RaceACar.DTO.CrearAutoDTO;
+import com.Equipo2.RaceACar.Exceptions.MailSendingException;
+import com.Equipo2.RaceACar.model.Auto;
 import com.Equipo2.RaceACar.service.AutoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +74,20 @@ public class AutoController {
         } catch (Exception ex) {
             System.err.println("Error al obtener la lista de autos: " + ex.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+    @GetMapping("/disponibles")
+    public ResponseEntity<List<Auto>> obtenerAutosDisponibles() {
+        try {
+            List<Auto> autosDisponibles = service.obtenerAutosDisponibles();
+            if (autosDisponibles.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+            return ResponseEntity.ok(autosDisponibles);
+        } catch (MailSendingException.ResourceNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
