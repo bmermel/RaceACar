@@ -26,6 +26,9 @@ public class AutoDTO {
 
     private List<Items> items = new ArrayList<>();
 
+    private List<String> images = new ArrayList<>();
+
     private Double valor;
     private Boolean disponible;
+
 }

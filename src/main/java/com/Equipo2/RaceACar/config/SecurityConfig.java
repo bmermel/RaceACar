@@ -35,10 +35,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authRequest ->
                         authRequest
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/usuarios/**").permitAll()
+                        .requestMatchers("/usuarios/**").authenticated()
+                        .requestMatchers("/**").permitAll()
+
                                 //.hasAnyAuthority("user:update", "user:read", "user:create", "user:delete", "user:patch", "ROLE_USER", "ROLE_ADMIN", "ROLE_SUPER_ADMIN")
 
-                        .anyRequest().permitAll()
+
 
 
                 )                .sessionManagement(sessionManager -> sessionManager

@@ -1,6 +1,7 @@
 package com.Equipo2.RaceACar.service;
 
 import com.Equipo2.RaceACar.DTO.AutoDTO;
+import com.Equipo2.RaceACar.DTO.CrearAutoDTO;
 import com.Equipo2.RaceACar.model.Auto;
 import com.Equipo2.RaceACar.repository.AutoRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -29,7 +30,7 @@ public class AutoService {
         }
     }
 
-    public void crearAuto(AutoDTO autoDTO) throws UnsupportedEncodingException {
+    public void crearAuto(CrearAutoDTO autoDTO) throws UnsupportedEncodingException {
         Auto auto = modelMapper.map(autoDTO, Auto.class);
         repository.save(auto);
     }

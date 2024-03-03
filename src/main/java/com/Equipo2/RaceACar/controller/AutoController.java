@@ -1,6 +1,7 @@
 package com.Equipo2.RaceACar.controller;
 
 import com.Equipo2.RaceACar.DTO.AutoDTO;
+import com.Equipo2.RaceACar.DTO.CrearAutoDTO;
 import com.Equipo2.RaceACar.service.AutoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class AutoController {
     private ObjectMapper mapper;
 
     @PostMapping()
-    public ResponseEntity<?> crearAuto(@RequestBody AutoDTO autoDTO) {
+    public ResponseEntity<?> crearAuto(@RequestBody CrearAutoDTO autoDTO) {
         try {
             service.crearAuto(autoDTO);
             return new ResponseEntity<>(HttpStatus.CREATED);

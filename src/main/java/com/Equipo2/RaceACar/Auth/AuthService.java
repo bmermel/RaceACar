@@ -15,12 +15,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import java.io.UnsupportedEncodingException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -74,10 +80,27 @@ public class AuthService {
         System.out.println(rolUsuarioService.buscarRolUsuario(1L));
         System.out.println(usuarioDTO.toString());
         usuarioService.guardarUsuario(usuarioDTO);
-        UserDetails user = mapper.convertValue(usuarioDTO, Usuario.class);
+
+
+
+        // Recuperar los permisos asociados al rol de usuario
+        RolUsuario rolUsuario = rolUsuarioService.buscarRolUsuario(1L);
+
+        // Convertir los permisos en una lista de autoridades
+        List<GrantedAuthority> authorities = new ArrayList<>(rolUsuario.getRol().getAuthorities());
+
+        // Crear manualmente un objeto UserDetails
+        UserDetails userDetails = User.builder()
+                .username(usuarioDTO.getEmail()) // El nombre de usuario es el correo electrónico
+                .password(usuarioDTO.getPassword()) // La contraseña se toma del DTO
+                .authorities(authorities) // Puedes asignar roles aquí si es necesario
+                .build();
+
+        // Generar token JWT con el UserDetails
+        String token = jwtService.getToken(userDetails);
         mailService.sendMail(usuarioDTO.getEmail());
         return AuthResponse.builder()
-                .token(jwtService.getToken(user))
+                .token(jwtService.getToken(userDetails))
                 .build();
     }
 }

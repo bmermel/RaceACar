@@ -11,7 +11,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Entity
@@ -61,7 +64,7 @@ public class Auto {
     @Column(name = "valor", nullable = false)
     private Double valor;
 
-    @OneToMany(mappedBy = "auto")
+    @OneToMany(mappedBy = "auto" , cascade = CascadeType.ALL)
     @JsonIgnoreProperties("auto")
     private List<Items> items = new ArrayList<>();
 
@@ -72,7 +75,8 @@ public class Auto {
             inverseJoinColumns = @JoinColumn(name = "ubicacion_id")
     )
     private List<Ubicacion> ubicaciones = new ArrayList<>();
-
+    @Column(name = "images")
+    private Collection<String> images = new ArrayList<>();
 
 /*    @ManyToMany
     @JoinTable(

@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,4 +25,7 @@ public class Categoria {
     @Column(name = "categoria", nullable = false, columnDefinition = "VARCHAR(255)")
     private String categoria;
 
+    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Auto> autos = new ArrayList<>();
 }
