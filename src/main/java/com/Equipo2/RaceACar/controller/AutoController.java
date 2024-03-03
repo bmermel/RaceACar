@@ -90,5 +90,14 @@ public class AutoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+    @PutMapping("/{id}/cambiar-disponibilidad")
+    public ResponseEntity<?> toggleDisponiblidad(@PathVariable Long id){
+        try{
+            service.toggleDisponibilidad(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch(RuntimeException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
+    }
 }

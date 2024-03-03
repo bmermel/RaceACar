@@ -75,6 +75,13 @@ public class AutoService {
     public List<Auto> findAutosDisponiblesEntreFechas(LocalDate fechaInicio, LocalDate fechaFin) {
         return repository.findDisponibleBetweenFechas(fechaInicio, fechaFin);
     }
+
+    public void toggleDisponibilidad(Long id){
+        Auto auto = repository.findById(id).orElse(null);
+        auto.setDisponible(!auto.getDisponible());
+
+        repository.save(auto);
+    }
     public List<Auto> obtenerAutosDisponibles() {
         List<Auto> autosDisponibles = repository.findByDisponibleTrue();
         if (autosDisponibles.isEmpty()) {
