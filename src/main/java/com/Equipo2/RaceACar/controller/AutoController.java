@@ -90,7 +90,7 @@ public class AutoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-    @PutMapping("/{id}/cambiar-disponibilidad")
+    @PatchMapping("/{id}/cambiar-disponibilidad")
     public ResponseEntity<?> toggleDisponiblidad(@PathVariable Long id){
         try{
             service.toggleDisponibilidad(id);
