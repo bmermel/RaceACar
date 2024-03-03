@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
@@ -32,6 +33,18 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario con el correo electrónico " + email + " no encontrado");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno del servidor");
+        }
+    }
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllUsuarios(){
+        try{
+            List<UsuarioSinPassDTO> usuarios =  service.getUsuarios();
+            if(!usuarios.isEmpty()){
+                return ResponseEntity.ok(usuarios);
+            }
+            return ResponseEntity.noContent().build();
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ocurrio un error al querer obtener la lista de usarios disponibles");
         }
     }
 }

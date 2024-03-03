@@ -29,7 +29,7 @@ public class CategoriaController {
     public ResponseEntity<?> crearAuto(@RequestBody CategoriaDTO categoriaDTO) {
         try{
             service.crearCategoria(categoriaDTO);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+            return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>("Error al crear la categoría: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -74,4 +74,5 @@ public class CategoriaController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
 }

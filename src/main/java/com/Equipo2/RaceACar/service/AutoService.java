@@ -4,7 +4,9 @@ import com.Equipo2.RaceACar.DTO.AutoDTO;
 import com.Equipo2.RaceACar.DTO.CrearAutoDTO;
 import com.Equipo2.RaceACar.Exceptions.MailSendingException;
 import com.Equipo2.RaceACar.model.Auto;
+import com.Equipo2.RaceACar.model.Categoria;
 import com.Equipo2.RaceACar.repository.AutoRepository;
+import com.Equipo2.RaceACar.repository.CategoriaRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,8 @@ public class AutoService {
 
     @Autowired
     private AutoRepository repository;
+    @Autowired
+    private CategoriaRepository categoriaRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -41,7 +45,23 @@ public class AutoService {
 
         if (autoOptional.isPresent()) {
             Auto autoExistente = autoOptional.get();
-            modelMapper.map(autoDTO, autoExistente);
+            //modelMapper.map(autoDTO, autoExistente);
+
+            Categoria categoria = categoriaRepository.findById(autoDTO.getIdCategoria()).orElse(null);
+
+            autoExistente.setMarca(autoDTO.getMarca());
+            autoExistente.setModelo(autoDTO.getModelo());
+            autoExistente.setAnio(autoDTO.getAnio());
+            autoExistente.setCapacidad(autoDTO.getCapacidad());
+            autoExistente.setColor(autoDTO.getColor());
+            autoExistente.setImages(autoDTO.getImages());
+            autoExistente.setItems(autoDTO.getItems());
+            autoExistente.setCategoria(categoria);
+            autoExistente.setCaballosDeFuerza(autoDTO.getCaballosDeFuerza());
+            autoExistente.setTipoDeCaja(autoDTO.getTipoDeCaja());
+            autoExistente.setValor(autoDTO.getValor());
+            autoExistente.setCombustion(autoDTO.getCombustion());
+
             repository.save(autoExistente);
         } else {
             throw new NoSuchElementException("No se encontró el auto con ID: " + id);

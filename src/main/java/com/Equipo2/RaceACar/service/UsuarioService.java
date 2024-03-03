@@ -17,9 +17,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UsuarioService {
@@ -51,5 +49,18 @@ public class UsuarioService {
         usuarioRepository.save(usuario);
         }
 
+    public List<UsuarioSinPassDTO> getUsuarios(){
+        List<Usuario> listaDeUsuarios =  usuarioRepository.findAll();
 
+        List<UsuarioSinPassDTO> usuarioSinPassDTOList = new ArrayList<>();
+
+        for (int i = 0; i < listaDeUsuarios.size() ; i++) {
+            UsuarioSinPassDTO usuario = mapper.convertValue(listaDeUsuarios.get(i), UsuarioSinPassDTO.class);
+            usuarioSinPassDTOList.add(usuario);
+        }
+
+        return usuarioSinPassDTOList;
+
+
+    }
     }

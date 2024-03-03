@@ -64,7 +64,10 @@ public class Auto {
     @Column(name = "valor", nullable = false)
     private Double valor;
 
-    @OneToMany(mappedBy = "auto" , cascade = CascadeType.ALL)
+    @Column(name = "images")
+    private Collection<String> images = new ArrayList<>();
+
+    @OneToMany(mappedBy = "auto")
     @JsonIgnoreProperties("auto")
     private List<Items> items = new ArrayList<>();
 
@@ -75,8 +78,7 @@ public class Auto {
             inverseJoinColumns = @JoinColumn(name = "ubicacion_id")
     )
     private List<Ubicacion> ubicaciones = new ArrayList<>();
-    @Column(name = "images")
-    private Collection<String> images = new ArrayList<>();
+
 
 /*    @ManyToMany
     @JoinTable(

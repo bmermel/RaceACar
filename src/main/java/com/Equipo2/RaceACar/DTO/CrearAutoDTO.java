@@ -13,7 +13,6 @@ import java.util.List;
 @Data
 @JsonIgnoreProperties
 public class CrearAutoDTO {
-    private Long id;
     private String marca;
     private String modelo;
     private Long idCategoria;
@@ -28,6 +27,5 @@ public class CrearAutoDTO {
     private Double valor;
     private List<Items> items = new ArrayList<>();
     private List<String> images = new ArrayList<>();
-
 
 }
