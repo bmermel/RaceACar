@@ -2,6 +2,7 @@ package com.Equipo2.RaceACar.controller;
 
 import com.Equipo2.RaceACar.DTO.AutoDTO;
 import com.Equipo2.RaceACar.DTO.CrearAutoDTO;
+import com.Equipo2.RaceACar.DTO.EditarAutoDTO;
 import com.Equipo2.RaceACar.Exceptions.MailSendingException;
 import com.Equipo2.RaceACar.model.Auto;
 import com.Equipo2.RaceACar.service.AutoService;
@@ -37,7 +38,7 @@ public class AutoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> editarAuto(@PathVariable Long id, @RequestBody AutoDTO autoDTO){
+    public ResponseEntity<?> editarAuto(@PathVariable Long id, @RequestBody EditarAutoDTO autoDTO){
         try {
             service.editarAuto(id, autoDTO);
             return new ResponseEntity<>(HttpStatus.OK);

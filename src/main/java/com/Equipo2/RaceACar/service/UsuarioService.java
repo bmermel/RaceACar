@@ -8,8 +8,10 @@ import com.Equipo2.RaceACar.model.RolUsuario;
 import com.Equipo2.RaceACar.repository.RolUsuarioRepository;
 import com.Equipo2.RaceACar.repository.UsuarioRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -63,4 +65,6 @@ public class UsuarioService {
 
 
     }
+
+
     }

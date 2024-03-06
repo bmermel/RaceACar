@@ -1,5 +1,6 @@
 package com.Equipo2.RaceACar.service;
 
+import com.Equipo2.RaceACar.DTO.UsuarioSinPassDTO;
 import com.Equipo2.RaceACar.User.Roles;
 import com.Equipo2.RaceACar.User.Usuario;
 import com.Equipo2.RaceACar.model.RolUsuario;
@@ -26,36 +27,31 @@ public class AdminService {
     private UsuarioRepository usuarioRepository;
     @Autowired
     private UserDetailsService userDetailsService;
+    @Autowired
+    UsuarioService service;
+    @Autowired
+    RolUsuarioService rolUsuarioService;
 
     @Transactional
-    public void asignarRolUsuario(String email) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals("ROLE_SUPER_ADMIN") || authority.getAuthority().equals("ROLE_ADMIN"))) {
-        cambiarRolUsuario(email, Roles.USER);
-        }
+    public void asignarRolUsuario(Long id) {
+        cambiarRolUsuario(id, rolUsuarioService.buscarRolUsuario(1L));
     }
     @Transactional
-    @PreAuthorize("hasRole('SUPER_ADMIN')")
-    public void asignarRolAdmin(String email) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals("ROLE_SUPER_ADMIN")))
-        {
-        cambiarRolUsuario(email, Roles.ADMIN);
-        }
+    public void asignarRolAdmin(Long id) {
+        cambiarRolUsuario(id, rolUsuarioService.buscarRolUsuario(2L));
+
     }
 
-    private void cambiarRolUsuario(String email, Roles newRole) {
-        Usuario usuario = usuarioRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + email));
+    private void cambiarRolUsuario(Long id, RolUsuario newRole) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
 
 
-        usuario.setRolUsuario((RolUsuario) Collections.singleton(newRole));
+        usuario.setRolUsuario(newRole);
         usuarioRepository.save(usuario);
 
         // Actualizar los detalles de usuario en la sesión si es necesario
-        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(usuario.getUsername());
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
     }

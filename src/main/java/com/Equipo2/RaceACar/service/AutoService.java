@@ -2,6 +2,7 @@ package com.Equipo2.RaceACar.service;
 
 import com.Equipo2.RaceACar.DTO.AutoDTO;
 import com.Equipo2.RaceACar.DTO.CrearAutoDTO;
+import com.Equipo2.RaceACar.DTO.EditarAutoDTO;
 import com.Equipo2.RaceACar.Exceptions.MailSendingException;
 import com.Equipo2.RaceACar.model.Auto;
 import com.Equipo2.RaceACar.model.Categoria;
@@ -40,7 +41,7 @@ public class AutoService {
         repository.save(auto);
     }
 
-    public void editarAuto(Long id, AutoDTO autoDTO) {
+    public void editarAuto(Long id, EditarAutoDTO autoDTO) {
         Optional<Auto> autoOptional = repository.findById(id);
 
         if (autoOptional.isPresent()) {
@@ -54,13 +55,12 @@ public class AutoService {
             autoExistente.setAnio(autoDTO.getAnio());
             autoExistente.setCapacidad(autoDTO.getCapacidad());
             autoExistente.setColor(autoDTO.getColor());
-            autoExistente.setImages(autoDTO.getImages());
-            autoExistente.setItems(autoDTO.getItems());
             autoExistente.setCategoria(categoria);
             autoExistente.setCaballosDeFuerza(autoDTO.getCaballosDeFuerza());
             autoExistente.setTipoDeCaja(autoDTO.getTipoDeCaja());
             autoExistente.setValor(autoDTO.getValor());
             autoExistente.setCombustion(autoDTO.getCombustion());
+            autoExistente.setDisponible(autoDTO.getDisponible());
 
             repository.save(autoExistente);
         } else {

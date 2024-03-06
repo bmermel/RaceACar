@@ -1,5 +1,6 @@
 package com.Equipo2.RaceACar.JWT;
 
+import com.Equipo2.RaceACar.User.Usuario;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -22,6 +23,8 @@ public class JwtService {
     }
 
     private String getToken(Map<String, Object> extraClaims, UserDetails usuario) {
+        //extraClaims.put("roles", );
+        extraClaims.put("permissions", usuario.getAuthorities());
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
@@ -31,6 +34,8 @@ public class JwtService {
                 .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
+
+
     private Key getKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);

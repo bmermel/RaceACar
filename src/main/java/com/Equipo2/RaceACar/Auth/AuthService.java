@@ -100,7 +100,7 @@ public class AuthService {
         String token = jwtService.getToken(userDetails);
         mailService.sendMail(usuarioDTO.getEmail());
         return AuthResponse.builder()
-                .token(jwtService.getToken(userDetails))
+                .token(token)
                 .build();
     }
 }
