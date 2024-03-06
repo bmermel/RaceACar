@@ -3,6 +3,7 @@ package com.Equipo2.RaceACar.controller;
 import com.Equipo2.RaceACar.DTO.AutoDTO;
 import com.Equipo2.RaceACar.DTO.CategoriaConIdDTO;
 import com.Equipo2.RaceACar.DTO.CategoriaDTO;
+import com.Equipo2.RaceACar.model.RolUsuario;
 import com.Equipo2.RaceACar.service.AutoService;
 import com.Equipo2.RaceACar.service.CategoriaService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,37 +27,48 @@ public class CategoriaController {
     private ObjectMapper mapper;
 
     @PostMapping()
-    public ResponseEntity<?> crearAuto(@RequestBody CategoriaDTO categoriaDTO) {
-        try{
+    public ResponseEntity<?> crearCategoria(@RequestBody CategoriaDTO categoriaDTO,@RequestBody RolUsuario idRol) {
+        if(idRol.getId()==2||idRol.getId()==3) {
+
+            try{
             service.crearCategoria(categoriaDTO);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>("Error al crear la categoría: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        }}
+        else return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No tienes permisos para realizar esta acción");
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> editarCategoria(@PathVariable Long id, @RequestBody CategoriaDTO categoriaDTO){
-        try {
+    public ResponseEntity<?> editarCategoria(@PathVariable Long id, @RequestBody CategoriaDTO categoriaDTO,@RequestBody RolUsuario idRol){
+        if(idRol.getId()==2||idRol.getId()==3) {
+
+            try {
             service.editarCategoria(id, categoriaDTO);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>("La categoría no fue encontrado", HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             return new ResponseEntity<>("Error al editar la categoría", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+        }}
+    else return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No tienes permisos para realizar esta acción");
+
+}
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> eliminarCategoria(@PathVariable Long id) {
-        try {
+    public ResponseEntity<?> eliminarCategoria(@PathVariable Long id,@RequestBody RolUsuario idRol) {
+        if(idRol.getId()==2||idRol.getId()==3) {
+
+            try {
             service.eliminarCategoria(id);
             return new ResponseEntity<>("Categoría Borrada Correctamente",HttpStatus.OK);
         } catch (EmptyResultDataAccessException e) {
             return new ResponseEntity<>("Categoría no encontrado", HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             return new ResponseEntity<>("Error al eliminar la categoría", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        }}
+        else return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No tienes permisos para realizar esta acción");
+
     }
 
     @GetMapping("/all")

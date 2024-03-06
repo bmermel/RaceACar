@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UsuarioSinPassDTO {
+    private Long id;
     private String nombre;
     private String apellido;
     private String email;

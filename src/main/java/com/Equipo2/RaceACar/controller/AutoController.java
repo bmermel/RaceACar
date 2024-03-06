@@ -1,17 +1,16 @@
 package com.Equipo2.RaceACar.controller;
 
-import com.Equipo2.RaceACar.DTO.AutoDTO;
 import com.Equipo2.RaceACar.DTO.CrearAutoDTO;
 import com.Equipo2.RaceACar.DTO.EditarAutoDTO;
 import com.Equipo2.RaceACar.Exceptions.MailSendingException;
 import com.Equipo2.RaceACar.model.Auto;
+import com.Equipo2.RaceACar.model.RolUsuario;
 import com.Equipo2.RaceACar.service.AutoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
@@ -28,57 +27,75 @@ public class AutoController {
     private ObjectMapper mapper;
 
     @PostMapping()
-    public ResponseEntity<?> crearAuto(@RequestBody CrearAutoDTO autoDTO) {
-        try {
+    public ResponseEntity<?> crearAuto(@RequestBody CrearAutoDTO autoDTO, @RequestBody RolUsuario idRol) {
+        if(idRol.getId()==2||idRol.getId()==3) {
+
+            try {
             service.crearAuto(autoDTO);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (UnsupportedEncodingException e) {
             return new ResponseEntity<>("Error al crear el auto: " + e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+        }}
+        else return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No tienes permisos para realizar esta acción");
+
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> editarAuto(@PathVariable Long id, @RequestBody EditarAutoDTO autoDTO){
-        try {
+    public ResponseEntity<?> editarAuto(@PathVariable Long id, @RequestBody EditarAutoDTO autoDTO, @RequestBody RolUsuario idRol){
+        if(idRol.getId()==2||idRol.getId()==3) {
+
+            try {
             service.editarAuto(id, autoDTO);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>("El auto no fue encontrado", HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             return new ResponseEntity<>("Error al editar el auto", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        }}
+        else return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No tienes permisos para realizar esta acción");
+
     }
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> eliminarAuto(@PathVariable Long id) {
-        try {
+    public ResponseEntity<?> eliminarAuto(@PathVariable Long id,@RequestBody RolUsuario idRol) {
+        if(idRol.getId()==2||idRol.getId()==3) {
+
+            try {
             service.eliminarAuto(id);
             return new ResponseEntity<>("Auto Borrado Correctamente",HttpStatus.OK);
         } catch (EmptyResultDataAccessException e) {
             return new ResponseEntity<>("Auto no encontrado", HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             return new ResponseEntity<>("Error al eliminar el auto", HttpStatus.NOT_FOUND);
-        }
+        }}
+        else return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No tienes permisos para realizar esta acción");
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Auto>> obtenerAutos() {
-        try {
-            List<Auto> autos = service.obtenerAutos();
+    public ResponseEntity<?> obtenerAutos(@RequestBody RolUsuario idRol) {
+        if(idRol.getId()==2||idRol.getId()==3) {
 
-            if (autos.isEmpty()) {
-                return ResponseEntity.noContent().build();
-            } else {
-                return ResponseEntity.ok(autos);
+                try {
+                List<Auto> autos = service.obtenerAutos();
+
+                if (autos.isEmpty()) {
+                    return ResponseEntity.noContent().build();
+                } else {
+                    return ResponseEntity.ok(autos);
+                }
+            } catch (Exception ex) {
+                System.err.println("Error al obtener la lista de autos: " + ex.getMessage());
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
             }
-        } catch (Exception ex) {
-            System.err.println("Error al obtener la lista de autos: " + ex.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+        else return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No tienes permisos para realizar esta acción");
     }
     @GetMapping("/disponibles")
+
+    //todos los users
     public ResponseEntity<List<Auto>> obtenerAutosDisponibles() {
+
         try {
             List<Auto> autosDisponibles = service.obtenerAutosDisponibles();
             if (autosDisponibles.isEmpty()) {
@@ -92,13 +109,14 @@ public class AutoController {
         }
     }
     @PatchMapping("/{id}/cambiar-disponibilidad")
-    public ResponseEntity<?> toggleDisponiblidad(@PathVariable Long id){
-        try{
-            service.toggleDisponibilidad(id);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }catch(RuntimeException e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
+    public ResponseEntity<?> toggleDisponiblidad(@PathVariable Long id, @RequestBody RolUsuario idRol){
+        if(idRol.getId()==2||idRol.getId()==3) {
+            try {
+                service.toggleDisponibilidad(id);
+                return new ResponseEntity<>(HttpStatus.OK);
+            } catch (RuntimeException e) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } else return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No tienes permisos para realizar esta acción");
     }
 }

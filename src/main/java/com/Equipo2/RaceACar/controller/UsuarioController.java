@@ -3,6 +3,7 @@ package com.Equipo2.RaceACar.controller;
 import com.Equipo2.RaceACar.DTO.UsuarioDTO;
 import com.Equipo2.RaceACar.DTO.UsuarioSinPassDTO;
 import com.Equipo2.RaceACar.User.Roles;
+import com.Equipo2.RaceACar.model.RolUsuario;
 import com.Equipo2.RaceACar.service.AutoService;
 import com.Equipo2.RaceACar.service.UsuarioService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,15 +29,10 @@ public class UsuarioController {
 
 
     @GetMapping("/{email}")
-    public ResponseEntity<?> buscarUsuarioPorEmail(@PathVariable String email) {
+    public ResponseEntity<?> buscarUsuarioPorEmail(@PathVariable String email, @RequestBody RolUsuario idRol) {
         UsuarioSinPassDTO usuarioDTO = service.buscarPorEmail(email);
-        System.out.println(usuarioDTO);
-        System.out.println(usuarioDTO.getRolUsuario());
-        System.out.println(usuarioDTO.getRolUsuario().getRol());
-        System.out.println(usuarioDTO.getRolUsuario().getRol().getAuthorities());
 
-
-        if(usuarioDTO.getRolUsuario().getId()==1)
+        if(idRol.getId()==1 || idRol.getId()==2 || idRol.getId()==3 || idRol.getId()!= null)
         {
             return ResponseEntity.ok(usuarioDTO);
 
@@ -48,15 +44,20 @@ public class UsuarioController {
 
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAllUsuarios(){
-        try{
-            List<UsuarioSinPassDTO> usuarios =  service.getUsuarios();
-            if(!usuarios.isEmpty()){
-                return ResponseEntity.ok(usuarios);
+    public ResponseEntity<?> getAllUsuarios( @RequestBody RolUsuario idRol) {
+        if (idRol.getId() == 1 || idRol.getId() == 2 || idRol.getId() == 3 || idRol.getId() != null)
+        {
+                try{
+                List<UsuarioSinPassDTO> usuarios =  service.getUsuarios();
+                if(!usuarios.isEmpty()){
+                    return ResponseEntity.ok(usuarios);
+                }
+                return ResponseEntity.noContent().build();
+            }catch (Exception e){
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ocurrio un error al querer obtener la lista de usarios disponibles");
             }
-            return ResponseEntity.noContent().build();
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("ocurrio un error al querer obtener la lista de usarios disponibles");
         }
-    }
+            else return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No tienes permisos para realizar esta acción");
+
+}
 }

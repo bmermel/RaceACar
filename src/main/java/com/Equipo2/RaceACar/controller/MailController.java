@@ -19,7 +19,7 @@ public class MailController {
     public ResponseEntity<String> resendMail(@RequestBody String email) {
         System.out.println(email);
         try {
-            mailService.sendMail(email);
+            mailService.reSendMail(email);
             return ResponseEntity.ok("Correo reenviado exitosamente a " + email);
         } catch (MailSendingException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al reenviar el correo electrónico: " + e.getMessage());

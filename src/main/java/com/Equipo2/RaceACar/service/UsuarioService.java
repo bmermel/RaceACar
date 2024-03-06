@@ -65,6 +65,14 @@ public class UsuarioService {
 
 
     }
-
+    public String buscarNombreApellidoPorEmail(String email) {
+        Optional<Usuario> usuarioOptional = usuarioRepository.findByEmail(email);
+        if (usuarioOptional.isPresent()) {
+            Usuario usuario = usuarioOptional.get();
+            return usuario.getNombre() + " " + usuario.getApellido();
+        } else {
+            return null; // O puedes lanzar una excepción indicando que el usuario no fue encontrado
+        }
+    }
 
     }

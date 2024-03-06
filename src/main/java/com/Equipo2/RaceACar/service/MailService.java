@@ -23,18 +23,38 @@ public class MailService {
     @Autowired
     private JavaMailSender mailSender;
 
+    @Autowired
+    private UsuarioService usuarioService;
     @Value("${spring.mail.username}")
     private String fromMail;
 
     @Async
     public void sendMail(String email) throws MailSendingException {
+        String username = usuarioService.buscarNombreApellidoPorEmail(email);
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
             helper.setFrom(fromMail, "Race a Car");
             helper.setTo(email);
-            helper.setText(MailTemplate.generateMail(), true);
+            helper.setText(MailTemplate.generateMail(username), true);
             helper.setSubject("Registro Exitoso! - Race A Car");
+            mailSender.send(mimeMessage);
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            throw new MailSendingException("Error al enviar el correo electrónico.", e);
+        }
+    }
+
+    @Async
+    public void reSendMail(String email) throws MailSendingException {
+        String username = usuarioService.buscarNombreApellidoPorEmail(email);
+
+        try {
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+            helper.setFrom(fromMail, "Race a Car");
+            helper.setTo(email);
+            helper.setText(MailTemplate.generateMail(username), true);
+            helper.setSubject("Reenvio de Registro Exitoso! - Race A Car");
             mailSender.send(mimeMessage);
         } catch (MessagingException | UnsupportedEncodingException e) {
             throw new MailSendingException("Error al enviar el correo electrónico.", e);
