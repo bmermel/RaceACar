@@ -37,7 +37,11 @@ public class AutoService {
     }
 
     public void crearAuto(CrearAutoDTO autoDTO) throws UnsupportedEncodingException {
+        Categoria categoria = categoriaRepository.findById(autoDTO.getIdCategoria())
+                .orElseThrow(() -> new NoSuchElementException("No se encontró la categoría con ID: " + autoDTO.getIdCategoria()));
+
         Auto auto = modelMapper.map(autoDTO, Auto.class);
+        auto.setCategoria(categoria);
         repository.save(auto);
     }
 

@@ -73,7 +73,7 @@ public class AutoController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<?> obtenerAutos(@RequestBody RolUsuario idRol) {
+    public ResponseEntity<?> obtenerAutos(@RequestHeader("idRol") RolUsuario idRol) {
         if(idRol.getId()==2||idRol.getId()==3) {
 
                 try {

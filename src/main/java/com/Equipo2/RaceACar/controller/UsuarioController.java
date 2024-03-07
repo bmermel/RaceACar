@@ -29,22 +29,16 @@ public class UsuarioController {
 
 
     @GetMapping("/{email}")
-    public ResponseEntity<?> buscarUsuarioPorEmail(@PathVariable String email, @RequestBody RolUsuario idRol) {
+    public ResponseEntity<?> buscarUsuarioPorEmail(@PathVariable String email) {
         UsuarioSinPassDTO usuarioDTO = service.buscarPorEmail(email);
 
-        if(idRol.getId()==1 || idRol.getId()==2 || idRol.getId()==3 || idRol.getId()!= null)
-        {
-            return ResponseEntity.ok(usuarioDTO);
-
-        }else{
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No tienes permisos para acceder a este recurso");
-        }
+        return usuarioDTO != null ? new ResponseEntity<>(usuarioDTO, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
     }
 
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAllUsuarios( @RequestBody RolUsuario idRol) {
+    public ResponseEntity<?> getAllUsuarios(@RequestHeader("idRol") RolUsuario idRol) {
         if (idRol.getId() == 1 || idRol.getId() == 2 || idRol.getId() == 3 || idRol.getId() != null)
         {
                 try{
