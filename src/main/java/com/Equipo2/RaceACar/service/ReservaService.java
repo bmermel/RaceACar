@@ -35,8 +35,6 @@ public class ReservaService {
             reservation.setFechaComienzo(fechaComienzo);
             reservation.setFechaFin(fechaFin);
             reservation.setFormaDePago(formaDePago);
-            //marca el auto no disponible
-            auto.setDisponible(false);
             autoRepository.save(auto);
             System.out.println(auto);
             return reservaRepository.save(reservation);

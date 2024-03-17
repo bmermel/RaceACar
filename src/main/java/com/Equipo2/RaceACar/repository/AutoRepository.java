@@ -20,4 +20,5 @@ public interface AutoRepository extends JpaRepository<Auto, Long> {
     List<Auto> findDisponibleBetweenFechas(@Param("fechaInicio") LocalDate fechaInicio, @Param("fechaFin") LocalDate fechaFin);
     List<Auto> findByDisponibleTrue();
 
+
 }
