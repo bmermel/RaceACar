@@ -36,7 +36,13 @@ public class Reserva {
     @Column(name = "valoracion")
     @OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Valoracion> valoraciones = new ArrayList<>();
-
+    @ManyToMany
+    @JoinTable(
+            name = "reserva_items_extra",
+            joinColumns = @JoinColumn(name = "reserva_id"),
+            inverseJoinColumns = @JoinColumn(name = "item_extra_id")
+    )
+    private List<ItemsExtra> itemsExtras = new ArrayList<>();
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;

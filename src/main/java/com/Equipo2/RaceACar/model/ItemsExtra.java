@@ -15,16 +15,18 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Items")
-public class Items {
+@Table(name = "Items_extra")
+public class ItemsExtra {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "nombre", nullable = false)
     private String nombre;
-    @ManyToMany(mappedBy = "items")
+    @Column(name = "precio", nullable = false)
+    private Integer precio;
+    @ManyToMany(mappedBy = "itemsExtras")
     @JsonIgnore
-    private List<Auto> autos = new ArrayList<>();
+    private List<Reserva> reservas = new ArrayList<>();
 
 
 }
