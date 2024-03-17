@@ -19,8 +19,10 @@ public class ReservaScheduler {
         this.reservaService = reservaService;
     }
 
-    // Esto se ejecuta solo cada 24 horas (86400000 ms)
-    @Scheduled(fixedRate = 86400000)
+    // Esto se ejecuta a las 10am todos los dias del mes, todos los meses, todoslos dias de lasemana
+    //    @Scheduled(fixedRate = 86400000) cuando estemos online quizas conviene esto por los horaios del server
+
+    @Scheduled(cron = "0 00 10 * * *")
     public void verificarReservasFinalizadas() {
         List<Reserva> reservasFinalizadas = reservaRepository.findByFechaFinBefore(LocalDate.now());
         for (Reserva reserva : reservasFinalizadas) {

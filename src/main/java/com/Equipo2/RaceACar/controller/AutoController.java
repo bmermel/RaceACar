@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -118,5 +119,21 @@ public class AutoController {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
         } else return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No tienes permisos para realizar esta acción");
+    }
+
+    @GetMapping("/disponiblesPorFecha")
+    public ResponseEntity<List<Auto>> obtenerAutosDisponiblesEntreFechas(
+            @RequestParam("fechaInicio") String fechaInicio,
+            @RequestParam("fechaFin") String fechaFin
+    ) {
+        LocalDate fechaInicioParsed = LocalDate.parse(fechaInicio);
+        LocalDate fechaFinParsed = LocalDate.parse(fechaFin);
+        List<Auto> autosDisponibles = service.obtenerAutosDisponiblesEntreFechas(fechaInicioParsed, fechaFinParsed);
+
+        if (autosDisponibles.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(autosDisponibles);
+        }
     }
 }

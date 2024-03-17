@@ -41,24 +41,18 @@ public class ReservaController {
     }
 
     @PostMapping("/crear")
-    public ResponseEntity<Reserva> crearReserva(@RequestParam Long autoId, @RequestParam LocalDate fechaComienzo, @RequestParam LocalDate fechaFin) {
+    public ResponseEntity<Reserva> crearReserva(@RequestParam Long autoId, @RequestParam LocalDate fechaComienzo, @RequestParam LocalDate fechaFin,@RequestParam String formaDePago) {
 
 
-        Auto auto = autoRepository.findById(autoId).orElseThrow(() -> new EntityNotFoundException("Auto not found"));
-
-        if (service.puedeReservar(auto, fechaComienzo, fechaFin)) {
-            Reserva reserva = new Reserva();
-            reserva.setAuto(auto);
-            reserva.setFechaComienzo(fechaComienzo);
-            reserva.setFechaFin(fechaFin);
-
-            Reserva nuevaReserva = reservaRepository.save(reserva);
+        try {
+            Reserva nuevaReserva = service.crearReserva(autoId, fechaComienzo, fechaFin, formaDePago);
+            String mensaje = "Reserva realizada con éxito para el auto con ID " + autoId + " desde " + fechaComienzo + " hasta " + fechaFin;
             return ResponseEntity.ok(nuevaReserva);
-        } else {
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
         }
     }
-    @PreAuthorize("hasAuthority('permission:read') || hasRole('ROLE_USER')")
+    //@PreAuthorize("hasAuthority('permission:read') || hasRole('ROLE_USER')")
     @GetMapping("/all")
     public ResponseEntity<List<ReservaDTO>> obtenerReservas() {
         try {
@@ -72,6 +66,16 @@ public class ReservaController {
         } catch (Exception ex) {
             System.err.println("Error al obtener la lista de reservas: " + ex.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/{autoId}/fechasInhabilitadas")
+    public ResponseEntity<List<LocalDate>> obtenerFechasInhabilitadasSegunAutoId(@PathVariable Long autoId) {
+        try {
+            List<LocalDate> fechasInhabilitadas = service.obtenerFechasInhabilitadasSegunAutoId(autoId);
+            return ResponseEntity.ok(fechasInhabilitadas);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
     }

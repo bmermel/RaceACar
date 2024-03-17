@@ -69,6 +69,14 @@ public class Auto {
 
     @OneToMany(mappedBy = "auto")
     @JsonIgnoreProperties("auto")
+    private List<Reserva> reservas = new ArrayList<>();
+    @ManyToMany
+    @JsonIgnoreProperties
+    @JoinTable(
+            name = "auto_items",
+            joinColumns = @JoinColumn(name = "auto_id"),
+            inverseJoinColumns = @JoinColumn(name = "item_id")
+    )
     private List<Items> items = new ArrayList<>();
 
     @ManyToMany

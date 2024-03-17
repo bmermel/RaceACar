@@ -6,6 +6,7 @@ import com.Equipo2.RaceACar.DTO.EditarAutoDTO;
 import com.Equipo2.RaceACar.Exceptions.MailSendingException;
 import com.Equipo2.RaceACar.model.Auto;
 import com.Equipo2.RaceACar.model.Categoria;
+import com.Equipo2.RaceACar.model.Reserva;
 import com.Equipo2.RaceACar.repository.AutoRepository;
 import com.Equipo2.RaceACar.repository.CategoriaRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -92,6 +93,35 @@ public class AutoService {
             throw new MailSendingException.ResourceNotFoundException("No se encontraron autos disponibles");
         }
         return autosDisponibles;
+    }
+
+    public List<Auto> obtenerAutosDisponiblesEntreFechas(LocalDate fechaInicio, LocalDate fechaFin) {
+        // Obtener todos los autos disponibles
+        List<Auto> autosDisponibles = repository.findByDisponibleTrue();
+
+        // Filtrar los autos que están disponibles dentro del rango de fechas
+        autosDisponibles = autosDisponibles.stream()
+                .filter(auto -> estaDisponibleEnFechas(auto, fechaInicio, fechaFin))
+                .collect(Collectors.toList());
+
+        if (autosDisponibles.isEmpty()) {
+            throw new MailSendingException.ResourceNotFoundException("No se encontraron autos disponibles para las fechas especificadas");
+        }
+
+        return autosDisponibles;
+    }
+
+    private boolean estaDisponibleEnFechas(Auto auto, LocalDate fechaInicio, LocalDate fechaFin) {
+        List<Reserva> reservas = auto.getReservas();
+
+        for (Reserva reserva : reservas) {
+            if (reserva.getFechaComienzo().isBefore(fechaFin) &&
+                    reserva.getFechaFin().isAfter(fechaInicio)) {
+                return false; // El auto está reservado en parte del rango de fechas
+            }
+        }
+
+        return true;
     }
 }
 

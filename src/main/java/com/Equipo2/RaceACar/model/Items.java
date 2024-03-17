@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -28,10 +31,9 @@ public class Items {
     @Column(name = "precio", nullable = false)
     private Double precio;
 
-    @ManyToOne
-    @JoinColumn(name = "auto_id", nullable = false)
+    @ManyToMany(mappedBy = "items")
     @JsonIgnore
-    private Auto auto;
+    private List<Auto> autos = new ArrayList<>();
 
 
 }
