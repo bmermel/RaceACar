@@ -18,7 +18,7 @@ public class RolUsuarioController {
     private RolUsuarioService rolUsuarioService;
 
     @PostMapping()
-    public ResponseEntity<?> crearRolUsuario(@RequestBody RolUsuarioDTO rolUsuarioDto, @RequestBody RolUsuario idRol) {
+    public ResponseEntity<?> crearRolUsuario(@RequestBody RolUsuarioDTO rolUsuarioDto, @RequestHeader("idRol")RolUsuario idRol) {
         if (idRol.getId() == 2 || idRol.getId() == 3)
         {
             rolUsuarioService.guardarRolusuario(rolUsuarioDto);

@@ -57,7 +57,7 @@ public class Auto {
     @Column(name = "Tipo_de_combustion", nullable = false)
 
     private Combustion combustion;
-    @Column(name = "Auto disponible", nullable = false)
+    @Column(name = "disponible", nullable = false)
 
     private Boolean disponible;
 

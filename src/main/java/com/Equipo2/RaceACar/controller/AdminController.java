@@ -20,7 +20,7 @@ public class AdminController {
     private ObjectMapper mapper;
 
     @PutMapping("/{id}/rol/user")
-    public ResponseEntity<String> asignarRolUsuario(@PathVariable Long id, @RequestBody RolUsuario idRol) {
+    public ResponseEntity<String> asignarRolUsuario(@PathVariable Long id, @RequestHeader("idRol") RolUsuario idRol) {
         if(idRol.getId()==3) {
             service.asignarRolUsuario(id);
             return ResponseEntity.ok("Rol de usuario asignado correctamente al usuario ID: " + id);
@@ -28,7 +28,7 @@ public class AdminController {
     }
 
     @PutMapping("/{id}/rol/admin")
-    public ResponseEntity<String> asignarRolAdmin(@PathVariable Long id, @RequestBody RolUsuario idRol) {
+    public ResponseEntity<String> asignarRolAdmin(@PathVariable Long id, @RequestHeader("idRol") RolUsuario idRol) {
         if(idRol.getId()==2 ||idRol.getId()==3) {
 
         service.asignarRolAdmin(id);

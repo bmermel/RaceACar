@@ -27,7 +27,7 @@ public class AutoController {
     private ObjectMapper mapper;
 
     @PostMapping()
-    public ResponseEntity<?> crearAuto(@RequestBody CrearAutoDTO autoDTO, @RequestBody RolUsuario idRol) {
+    public ResponseEntity<?> crearAuto(@RequestBody CrearAutoDTO autoDTO, @RequestHeader("idRol") RolUsuario idRol) {
         if(idRol.getId()==2||idRol.getId()==3) {
 
             try {
@@ -41,7 +41,7 @@ public class AutoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> editarAuto(@PathVariable Long id, @RequestBody EditarAutoDTO autoDTO, @RequestBody RolUsuario idRol){
+    public ResponseEntity<?> editarAuto(@PathVariable Long id, @RequestBody EditarAutoDTO autoDTO,@RequestHeader("idRol") RolUsuario idRol){
         if(idRol.getId()==2||idRol.getId()==3) {
 
             try {
@@ -58,7 +58,7 @@ public class AutoController {
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> eliminarAuto(@PathVariable Long id,@RequestBody RolUsuario idRol) {
+    public ResponseEntity<?> eliminarAuto(@PathVariable Long id,@RequestHeader("idRol") RolUsuario idRol) {
         if(idRol.getId()==2||idRol.getId()==3) {
 
             try {
@@ -109,7 +109,7 @@ public class AutoController {
         }
     }
     @PatchMapping("/{id}/cambiar-disponibilidad")
-    public ResponseEntity<?> toggleDisponiblidad(@PathVariable Long id, @RequestBody RolUsuario idRol){
+    public ResponseEntity<?> toggleDisponiblidad(@PathVariable Long id, @RequestHeader("idRol") RolUsuario idRol){
         if(idRol.getId()==2||idRol.getId()==3) {
             try {
                 service.toggleDisponibilidad(id);

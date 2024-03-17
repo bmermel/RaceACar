@@ -27,7 +27,7 @@ public class CategoriaController {
     private ObjectMapper mapper;
 
     @PostMapping()
-    public ResponseEntity<?> crearCategoria(@RequestBody CategoriaDTO categoriaDTO,@RequestBody RolUsuario idRol) {
+    public ResponseEntity<?> crearCategoria(@RequestBody CategoriaDTO categoriaDTO,@RequestHeader("idRol") RolUsuario idRol) {
         if(idRol.getId()==2||idRol.getId()==3) {
 
             try{
@@ -40,7 +40,7 @@ public class CategoriaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> editarCategoria(@PathVariable Long id, @RequestBody CategoriaDTO categoriaDTO,@RequestBody RolUsuario idRol){
+    public ResponseEntity<?> editarCategoria(@PathVariable Long id, @RequestBody CategoriaDTO categoriaDTO,@RequestHeader("idRol") RolUsuario idRol){
         if(idRol.getId()==2||idRol.getId()==3) {
 
             try {
@@ -56,7 +56,7 @@ public class CategoriaController {
 }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> eliminarCategoria(@PathVariable Long id,@RequestBody RolUsuario idRol) {
+    public ResponseEntity<?> eliminarCategoria(@PathVariable Long id,@RequestHeader("idRol") RolUsuario idRol) {
         if(idRol.getId()==2||idRol.getId()==3) {
 
             try {
