@@ -2,6 +2,7 @@ package com.Equipo2.RaceACar.service;
 
 import com.Equipo2.RaceACar.DTO.AutoDTO;
 import com.Equipo2.RaceACar.DTO.ReservaDTO;
+import com.Equipo2.RaceACar.User.Usuario;
 import com.Equipo2.RaceACar.model.Auto;
 import com.Equipo2.RaceACar.model.Reserva;
 import com.Equipo2.RaceACar.repository.AutoRepository;
@@ -26,7 +27,7 @@ public class ReservaService {
     @Autowired
     private AutoRepository autoRepository;
 
-    public Reserva crearReserva(Long autoId, LocalDate fechaComienzo, LocalDate fechaFin, String formaDePago) {
+    public Reserva crearReserva(Long autoId, LocalDate fechaComienzo, LocalDate fechaFin, String formaDePago, Usuario usuario) {
         Auto auto = autoRepository.findById(autoId).orElseThrow(() -> new EntityNotFoundException("Auto not found"));
 
         if (puedeReservar(auto, fechaComienzo, fechaFin)) {
@@ -35,6 +36,7 @@ public class ReservaService {
             reservation.setFechaComienzo(fechaComienzo);
             reservation.setFechaFin(fechaFin);
             reservation.setFormaDePago(formaDePago);
+            reservation.setUsuario(usuario);
             autoRepository.save(auto);
             System.out.println(auto);
             return reservaRepository.save(reservation);
@@ -76,6 +78,7 @@ public class ReservaService {
         auto.setDisponible(true);
         autoRepository.save(auto);
     }
+
 
     public List<LocalDate> obtenerFechasInhabilitadasSegunAutoId(Long autoId) {
         Auto auto = autoRepository.findById(autoId)

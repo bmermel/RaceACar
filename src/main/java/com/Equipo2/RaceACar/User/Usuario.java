@@ -2,6 +2,7 @@ package com.Equipo2.RaceACar.User;
 
 import com.Equipo2.RaceACar.model.Reserva;
 import com.Equipo2.RaceACar.model.RolUsuario;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
@@ -47,6 +48,7 @@ public class Usuario  implements UserDetails {
     @ManyToOne(cascade = CascadeType.PERSIST)
     private RolUsuario rolUsuario;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reserva> reservas = new ArrayList<>();
 

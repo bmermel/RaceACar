@@ -2,10 +2,13 @@ package com.Equipo2.RaceACar.controller;
 
 import com.Equipo2.RaceACar.DTO.AutoDTO;
 import com.Equipo2.RaceACar.DTO.ReservaDTO;
+import com.Equipo2.RaceACar.DTO.UsuarioSinPassDTO;
+import com.Equipo2.RaceACar.User.Usuario;
 import com.Equipo2.RaceACar.model.Auto;
 import com.Equipo2.RaceACar.model.Reserva;
 import com.Equipo2.RaceACar.repository.AutoRepository;
 import com.Equipo2.RaceACar.repository.ReservaRepository;
+import com.Equipo2.RaceACar.repository.UsuarioRepository;
 import com.Equipo2.RaceACar.service.AutoService;
 import com.Equipo2.RaceACar.service.ReservaService;
 import com.Equipo2.RaceACar.service.UsuarioService;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/reservas")
@@ -35,22 +39,24 @@ public class ReservaController {
     @Autowired
     private UsuarioService usuarioService;
     @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    @Autowired
     public ReservaController(ReservaRepository reservaRepository, AutoRepository autoRepository) {
         this.reservaRepository = reservaRepository;
         this.autoRepository = autoRepository;
     }
 
     @PostMapping("/crear")
-    public ResponseEntity<Reserva> crearReserva(@RequestParam Long autoId, @RequestParam LocalDate fechaComienzo, @RequestParam LocalDate fechaFin,@RequestParam String formaDePago) {
+    public ResponseEntity<Reserva> crearReserva(@RequestParam Long autoId, @RequestParam LocalDate fechaComienzo, @RequestParam LocalDate fechaFin,@RequestParam String formaDePago, @RequestParam String email) {
 
 
-        try {
-            Reserva nuevaReserva = service.crearReserva(autoId, fechaComienzo, fechaFin, formaDePago);
+            Usuario usuario = mapper.convertValue(usuarioService.buscarPorEmail(email),Usuario.class);
+        System.out.println(usuario);
+            Reserva nuevaReserva = service.crearReserva(autoId, fechaComienzo, fechaFin, formaDePago, usuario);
             String mensaje = "Reserva realizada con éxito para el auto con ID " + autoId + " desde " + fechaComienzo + " hasta " + fechaFin;
             return ResponseEntity.ok(nuevaReserva);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
-        }
+
     }
     //@PreAuthorize("hasAuthority('permission:read') || hasRole('ROLE_USER')")
     @GetMapping("/all")
