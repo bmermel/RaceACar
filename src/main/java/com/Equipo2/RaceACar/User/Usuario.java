@@ -1,5 +1,6 @@
 package com.Equipo2.RaceACar.User;
 
+import com.Equipo2.RaceACar.model.Reserva;
 import com.Equipo2.RaceACar.model.RolUsuario;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -7,8 +8,10 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Entity
 @Getter
@@ -43,6 +46,9 @@ public class Usuario  implements UserDetails {
     @JoinColumn(name = "rolUsuario_id", nullable = false)
     @ManyToOne(cascade = CascadeType.PERSIST)
     private RolUsuario rolUsuario;
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reserva> reservas = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
