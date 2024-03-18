@@ -18,7 +18,7 @@ public class ItemsExtraController {
     private ItemsExtraService itemsExtraService;
 
     @PostMapping("/crear")
-    public ResponseEntity<ItemsExtraDTO> crearItemExtra(@RequestParam String nombre, @RequestParam Integer precio) {
+    public ResponseEntity<ItemsExtraDTO> crearItemExtra(@RequestBody String nombre, @RequestBody Integer precio) {
         try {
             ItemsExtraDTO nuevoItemExtra = itemsExtraService.crearItemExtra(nombre, precio);
             return ResponseEntity.status(HttpStatus.CREATED).body(nuevoItemExtra);
@@ -41,8 +41,8 @@ public class ItemsExtraController {
 
     @PutMapping("/editar/{itemExtraId}")
     public ResponseEntity<ItemsExtraDTO> editarItemExtra(@PathVariable Long itemExtraId,
-                                                         @RequestParam String nuevoNombre,
-                                                         @RequestParam Integer nuevoPrecio) {
+                                                         @RequestBody String nuevoNombre,
+                                                         @RequestBody Integer nuevoPrecio) {
         try {
             ItemsExtraDTO itemExtraActualizado = itemsExtraService.editarItemExtra(itemExtraId, nuevoNombre, nuevoPrecio);
             return ResponseEntity.ok(itemExtraActualizado);

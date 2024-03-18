@@ -18,7 +18,7 @@ public class ItemsController {
     private ItemsService itemsService;
 
     @PostMapping("/crear")
-    public ResponseEntity<ItemsDTO> crearItem(@RequestParam String nombre) {
+    public ResponseEntity<ItemsDTO> crearItem(@RequestBody String nombre) {
         try {
             ItemsDTO nuevoItem = itemsService.crearItem(nombre);
             return ResponseEntity.status(HttpStatus.CREATED).body(nuevoItem);
@@ -40,7 +40,7 @@ public class ItemsController {
     }
 
     @PutMapping("/editar/{itemId}")
-    public ResponseEntity<ItemsDTO> editarItem(@PathVariable Long itemId, @RequestParam String nuevoNombre) {
+    public ResponseEntity<ItemsDTO> editarItem(@PathVariable Long itemId, @RequestBody String nuevoNombre) {
         try {
             ItemsDTO itemActualizado = itemsService.editarItem(itemId, nuevoNombre);
             return ResponseEntity.ok(itemActualizado);
