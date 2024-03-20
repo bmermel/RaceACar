@@ -53,6 +53,7 @@ public class Usuario  implements UserDetails {
     private List<Reserva> reservas = new ArrayList<>();
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (rolUsuario != null && rolUsuario.getRol() != null)
         {

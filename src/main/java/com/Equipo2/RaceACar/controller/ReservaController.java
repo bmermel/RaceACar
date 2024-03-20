@@ -51,13 +51,14 @@ public class ReservaController {
     public ResponseEntity<Reserva> crearReserva(@RequestParam Long autoId, @RequestParam LocalDate fechaComienzo, @RequestParam LocalDate fechaFin,@RequestParam String formaDePago, @RequestParam String email) {
 
 
-            Usuario usuario = mapper.convertValue(usuarioService.buscarPorEmail(email),Usuario.class);
+        Usuario usuario = mapper.convertValue(usuarioService.buscarPorEmail(email),Usuario.class);
         System.out.println(usuario);
-            Reserva nuevaReserva = service.crearReserva(autoId, fechaComienzo, fechaFin, formaDePago, usuario);
-            String mensaje = "Reserva realizada con éxito para el auto con ID " + autoId + " desde " + fechaComienzo + " hasta " + fechaFin;
-            return ResponseEntity.ok(nuevaReserva);
+        Reserva nuevaReserva = service.crearReserva(autoId, fechaComienzo, fechaFin, formaDePago, usuario);
+        String mensaje = "Reserva realizada con éxito para el auto con ID " + autoId + " desde " + fechaComienzo + " hasta " + fechaFin;
+        return ResponseEntity.ok(nuevaReserva);
 
     }
+
     //@PreAuthorize("hasAuthority('permission:read') || hasRole('ROLE_USER')")
     @GetMapping("/all")
     public ResponseEntity<List<ReservaDTO>> obtenerReservas() {

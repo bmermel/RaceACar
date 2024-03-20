@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,15 +24,20 @@ public class CategoriaService {
     private CategoriaRepository categoriaRepository;
 
     public CategoriaDTO crearCategoria(CategoriaDTO categoriaDTO) {
-        Categoria categoria = new Categoria();
-        categoria.setCategoria(categoriaDTO.getCategoria());
-        Categoria categoriaGuardada = categoriaRepository.save(categoria);
+        Optional<Categoria> categoriaExistente = categoriaRepository.findByCategoria(categoriaDTO.getCategoria());
+        if (categoriaExistente.isPresent()) {
+            CategoriaDTO categoriaExistenteDTO = new CategoriaDTO();
+            categoriaExistenteDTO.setCategoria(categoriaExistente.get().getCategoria());
+            return categoriaExistenteDTO;
+        } else {
+            Categoria categoria = new Categoria();
+            categoria.setCategoria(categoriaDTO.getCategoria());
+            Categoria categoriaGuardada = categoriaRepository.save(categoria);
 
-        CategoriaDTO nuevaCategoriaDTO = new CategoriaDTO();
-        nuevaCategoriaDTO.setCategoria(categoriaGuardada.getCategoria());
-
-        return nuevaCategoriaDTO;
-
+            CategoriaDTO nuevaCategoriaDTO = new CategoriaDTO();
+            nuevaCategoriaDTO.setCategoria(categoriaGuardada.getCategoria());
+            return nuevaCategoriaDTO;
+        }
     }
 
     public void eliminarCategoria(Long id) {

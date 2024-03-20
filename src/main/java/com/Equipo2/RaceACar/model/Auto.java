@@ -67,7 +67,7 @@ public class Auto {
     @Column(name = "images")
     private Collection<String> images = new ArrayList<>();
 
-    @OneToMany(mappedBy = "auto")
+    @OneToMany(mappedBy = "auto", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("auto")
     private List<Reserva> reservas = new ArrayList<>();
     @ManyToMany
