@@ -1,8 +1,11 @@
 package com.Equipo2.RaceACar.DTO;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class CategoriaDTO {
     private String categoria;
 
