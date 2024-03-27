@@ -10,7 +10,10 @@ import com.Equipo2.RaceACar.repository.ValoracionRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -28,6 +31,7 @@ public class ValoracionService {
     @Autowired
     private ValoracionRepository valoracionRepository;
 
+
     public ValoracionDTO crearValoracion(Long reservaId, Integer valoracion, String resena) {
         Reserva reserva = reservaRepository.findById(reservaId)
                 .orElseThrow(() -> new NoSuchElementException("No se encontró la reserva con ID: " + reservaId));
@@ -41,7 +45,8 @@ public class ValoracionService {
         Valoracion valoracionGuardada = valoracionRepository.save(nuevaValoracion);
         return modelMapper.map(valoracionGuardada, ValoracionDTO.class);
     }
-    public List<ValoracionDTO> obtenerTodasLasValoraciones() {
+/* metodo no utilizado ver si borrar
+*     public List<ValoracionDTO> obtenerTodasLasValoraciones() {
         List<Valoracion> valoraciones = valoracionRepository.findAll();
 
         if (valoraciones.isEmpty()) {
@@ -52,6 +57,7 @@ public class ValoracionService {
                 .map(valoracion -> modelMapper.map(valoracion, ValoracionDTO.class))
                 .collect(Collectors.toList());
     }
+* */
 
     public List<ValoracionDTO> obtenerValoracionesPorIdAuto(Long idAuto) {
         List<Valoracion> valoraciones = valoracionRepository.findByReservaAutoId(idAuto);
