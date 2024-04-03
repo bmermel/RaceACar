@@ -33,6 +33,11 @@ public class Reserva {
 
     @Column(name = "Forma_de_pago", nullable = false)
     private String formaDePago;
+
+    @Column(name = "Lugar_recogida", nullable = false)
+    private String recogida;
+    @Column(name = "Lugar_entrega", nullable = false)
+    private String entrega;
     @Column(name = "valoracion")
     @OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Valoracion> valoraciones = new ArrayList<>();

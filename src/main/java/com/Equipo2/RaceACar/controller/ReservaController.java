@@ -48,12 +48,12 @@ public class ReservaController {
     }
 
     @PostMapping("/crear")
-    public ResponseEntity<Reserva> crearReserva(@RequestParam Long autoId, @RequestParam LocalDate fechaComienzo, @RequestParam LocalDate fechaFin,@RequestParam String formaDePago, @RequestParam String email) {
+    public ResponseEntity<Reserva> crearReserva(@RequestParam Long autoId, @RequestParam LocalDate fechaComienzo, @RequestParam LocalDate fechaFin,@RequestParam String formaDePago, @RequestParam String email, @RequestParam String recogida, @RequestParam String entrega) {
 
 
         Usuario usuario = mapper.convertValue(usuarioService.buscarPorEmail(email),Usuario.class);
         System.out.println(usuario);
-        Reserva nuevaReserva = service.crearReserva(autoId, fechaComienzo, fechaFin, formaDePago, usuario);
+        Reserva nuevaReserva = service.crearReserva(autoId, fechaComienzo, fechaFin, formaDePago, usuario,recogida,entrega);
         String mensaje = "Reserva realizada con éxito para el auto con ID " + autoId + " desde " + fechaComienzo + " hasta " + fechaFin;
         return ResponseEntity.ok(nuevaReserva);
 
@@ -83,6 +83,21 @@ public class ReservaController {
             return ResponseEntity.ok(fechasInhabilitadas);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+    @GetMapping("/{usuarioId}")
+    public ResponseEntity<List<ReservaDTO>> obtenerReservasPorUsuario(@PathVariable Long usuarioId) {
+        List<ReservaDTO> reservasDTO = service.obtenerReservasPorUsuario(usuarioId);
+        return new ResponseEntity<>(reservasDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/{usuarioId}/ultima")
+    public ResponseEntity<ReservaDTO> obtenerUltimaReservaPorUsuario(@PathVariable Long usuarioId) {
+        ReservaDTO ultimaReservaDTO = service.obtenerUltimaReservaPorUsuario(usuarioId);
+        if (ultimaReservaDTO != null) {
+            return new ResponseEntity<>(ultimaReservaDTO, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
     }

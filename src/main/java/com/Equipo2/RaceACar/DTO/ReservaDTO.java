@@ -1,10 +1,7 @@
 package com.Equipo2.RaceACar.DTO;
 
 import com.Equipo2.RaceACar.model.Auto;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -17,4 +14,8 @@ public class ReservaDTO {
 
     private LocalDate fechaComienzo;
     private LocalDate fechaFin;
+    private String formaDePago;
+
+    private String recogida;
+    private String entrega;
 }

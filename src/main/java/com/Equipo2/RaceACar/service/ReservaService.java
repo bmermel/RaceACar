@@ -26,8 +26,10 @@ public class ReservaService {
     private ModelMapper modelMapper;
     @Autowired
     private AutoRepository autoRepository;
+    @Autowired
+    private MailService mailService;
 
-    public Reserva crearReserva(Long autoId, LocalDate fechaComienzo, LocalDate fechaFin, String formaDePago, Usuario usuario) {
+    public Reserva crearReserva(Long autoId, LocalDate fechaComienzo, LocalDate fechaFin, String formaDePago, Usuario usuario, String recogida, String entrega) {
         Auto auto = autoRepository.findById(autoId).orElseThrow(() -> new EntityNotFoundException("Auto not found"));
 
         if (puedeReservar(auto, fechaComienzo, fechaFin)) {
@@ -37,8 +39,11 @@ public class ReservaService {
             reservation.setFechaFin(fechaFin);
             reservation.setFormaDePago(formaDePago);
             reservation.setUsuario(usuario);
+            reservation.setRecogida(recogida);
+            reservation.setEntrega(entrega);
             autoRepository.save(auto);
             System.out.println(auto);
+            mailService.sendMailReservation(usuario.getEmail(),reservation);
             return reservaRepository.save(reservation);
         } else {
             throw new IllegalArgumentException("El auto no está disponible para las fechas especificadas");
@@ -110,4 +115,29 @@ public class ReservaService {
 
         return fechas;
     }
+
+    public List<ReservaDTO> obtenerReservasPorUsuario(Long usuarioId) {
+        Usuario usuario = new Usuario();
+        usuario.setId(usuarioId);
+
+        List<Reserva> reservas = reservaRepository.findByUsuario(usuario);
+
+        return reservas.stream()
+                .map(reserva -> modelMapper.map(reserva, ReservaDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    public ReservaDTO obtenerUltimaReservaPorUsuario(Long usuarioId) {
+        Usuario usuario = new Usuario();
+        usuario.setId(usuarioId);
+
+        Reserva ultimaReserva = reservaRepository.findFirstByUsuarioOrderByFechaComienzoDesc(usuario);
+
+        if (ultimaReserva != null) {
+            return modelMapper.map(ultimaReserva, ReservaDTO.class);
+        } else {
+            return null;
+        }
+    }
+
     }
