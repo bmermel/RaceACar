@@ -14,10 +14,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@master
         with:
           java-version: '17'
-          distribution: 'temurin'
 
       - name: Build project with Maven
         run: mvn -B package --file pom.xml
@@ -41,6 +40,4 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           passphrase: renta
           script: |
-            sudo systemctl stop myapp.service
-            sudo systemctl start myapp.service
-           
+            sudo systemctl restart myapp.service
