@@ -30,6 +30,7 @@ jobs:
           passphrase: renta
           source: "target/Race-A-Car-0.0.1-SNAPSHOT.jar"
           target: "/var/myapp"
+          distribution: "ubuntu"
 
       - name: SSH into EC2 and restart service
         uses: appleboy/ssh-action@master
