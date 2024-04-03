@@ -26,6 +26,8 @@ import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/reservas")
+@CrossOrigin(origins = "*")
+
 
 public class ReservaController {
 

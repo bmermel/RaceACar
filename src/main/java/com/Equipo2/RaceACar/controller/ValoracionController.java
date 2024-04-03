@@ -17,6 +17,8 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/valoraciones")
+@CrossOrigin(origins = "*")
+
 public class ValoracionController {
 
     @Autowired

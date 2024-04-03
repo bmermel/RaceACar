@@ -12,6 +12,8 @@ import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/items")
+@CrossOrigin(origins = "*")
+
 public class ItemsController {
 
     @Autowired
