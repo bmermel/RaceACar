@@ -17,6 +17,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '17'
+          distribution: 'java'
 
       - name: Build project with Maven
         run: mvn -B package --file pom.xml
@@ -30,6 +31,7 @@ jobs:
           passphrase: renta
           source: "target/Race-A-Car-0.0.1-SNAPSHOT.jar"
           target: "/var/myapp/Race-A-Car-0.0.1-SNAPSHOT.jar"
+          distribution: "ubuntu"
 
       - name: SSH into EC2 and restart service
         uses: appleboy/ssh-action@master
