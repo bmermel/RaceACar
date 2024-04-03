@@ -22,7 +22,7 @@ jobs:
         run: mvn -B package --file pom.xml
 
       - name: Copy JAR file to EC2
-        uses: appleboy/scp-action@v1
+        uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
@@ -42,4 +42,3 @@ jobs:
           script: |
             sudo systemctl stop myapp.service
             sudo systemctl start myapp.service
-
