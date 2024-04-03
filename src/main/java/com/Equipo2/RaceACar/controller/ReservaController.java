@@ -1,6 +1,7 @@
 package com.Equipo2.RaceACar.controller;
 
 import com.Equipo2.RaceACar.DTO.AutoDTO;
+import com.Equipo2.RaceACar.DTO.CrearReservaDTO;
 import com.Equipo2.RaceACar.DTO.ReservaDTO;
 import com.Equipo2.RaceACar.DTO.UsuarioSinPassDTO;
 import com.Equipo2.RaceACar.User.Usuario;
@@ -50,15 +51,18 @@ public class ReservaController {
     }
 
     @PostMapping("/crear")
-    public ResponseEntity<Reserva> crearReserva(@RequestParam Long autoId, @RequestParam LocalDate fechaComienzo, @RequestParam LocalDate fechaFin,@RequestParam String formaDePago, @RequestParam String email, @RequestParam String recogida, @RequestParam String entrega) {
+    public ResponseEntity<Reserva> crearReserva(@RequestBody CrearReservaDTO reservaDTO) {
+        try {
+            Usuario usuario = mapper.convertValue(usuarioService.buscarPorEmail(reservaDTO.getEmail()), Usuario.class);
+            Reserva nuevaReserva = service.crearReserva(reservaDTO.getAutoId(), reservaDTO.getFechaComienzo(),
+                    reservaDTO.getFechaFin(), reservaDTO.getFormaDePago(), usuario, reservaDTO.getRecogida(),
+                    reservaDTO.getEntrega());
+            String mensaje = "Reserva realizada con éxito para el auto con ID " + reservaDTO.getAutoId() +
+                    " desde " + reservaDTO.getFechaComienzo() + " hasta " + reservaDTO.getFechaFin();
+            return ResponseEntity.ok(nuevaReserva);
+        } finally {
 
-
-        Usuario usuario = mapper.convertValue(usuarioService.buscarPorEmail(email),Usuario.class);
-        System.out.println(usuario);
-        Reserva nuevaReserva = service.crearReserva(autoId, fechaComienzo, fechaFin, formaDePago, usuario,recogida,entrega);
-        String mensaje = "Reserva realizada con éxito para el auto con ID " + autoId + " desde " + fechaComienzo + " hasta " + fechaFin;
-        return ResponseEntity.ok(nuevaReserva);
-
+        }
     }
 
     //@PreAuthorize("hasAuthority('permission:read') || hasRole('ROLE_USER')")
