@@ -21,8 +21,10 @@ public class CorsConfig {
         config.addAllowedOrigin("http://localhost:5174");
         config.addAllowedOrigin("http://ec2-44-204-2-67.compute-1.amazonaws.com");
         config.addAllowedOrigin("http://prin.rentacardh.com");
+        config.addAllowedOrigin("http://www.rentacardh.com");
+        config.addAllowedOrigin("http://admin.rentacardh.com");
 
-        config.setAllowedOrigins(List.of("http://localhost:5173","http://localhost:5174","http://ec2-44-204-2-67.compute-1.amazonaws.com","http://prin.rentacardh.com"));
+        config.setAllowedOrigins(List.of("http://localhost:5173","http://localhost:5174","http://ec2-44-204-2-67.compute-1.amazonaws.com","http://prin.rentacardh.com","http://www.rentacardh.com","http://admin.rentacardh.com"));
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         config.addExposedHeader("*");
