@@ -41,6 +41,5 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           passphrase: renta
           script: |
-            sudo systemctl stop myapp.service
-            sudo systemctl start myapp.service
+            sudo systemctl restart myapp.service
            
