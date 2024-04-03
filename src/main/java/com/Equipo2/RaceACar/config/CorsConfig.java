@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class CorsConfig {
         config.addAllowedOrigin("http://www.rentacardh.com");
         config.addAllowedOrigin("http://admin.rentacardh.com");
 
-        config.setAllowedOrigins(List.of("http://localhost:5173","http://localhost:5174","http://ec2-44-204-2-67.compute-1.amazonaws.com","http://prin.rentacardh.com","http://www.rentacardh.com","http://admin.rentacardh.com"));
+        config.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:5174", "http://ec2-44-204-2-67.compute-1.amazonaws.com", "http://www.rentacardh.com", "http://admin.rentacardh.com"));
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         config.addExposedHeader("*");
