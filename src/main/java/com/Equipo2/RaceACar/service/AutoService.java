@@ -125,5 +125,11 @@ public class AutoService {
     }
 
 
+    @Autowired
+    private AutoRepository autoRepository;
+
+    public Auto obtenerAutoPorId(Long id) {
+        return autoRepository.findById(id).orElse(null);
+    }
 }
 
