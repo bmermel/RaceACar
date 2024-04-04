@@ -3,10 +3,12 @@ package com.Equipo2.RaceACar.service;
 import com.Equipo2.RaceACar.DTO.AutoDTO;
 import com.Equipo2.RaceACar.DTO.CrearAutoDTO;
 import com.Equipo2.RaceACar.DTO.EditarAutoDTO;
+import com.Equipo2.RaceACar.DTO.ValoracionDTO;
 import com.Equipo2.RaceACar.Exceptions.MailSendingException;
 import com.Equipo2.RaceACar.model.Auto;
 import com.Equipo2.RaceACar.model.Categoria;
 import com.Equipo2.RaceACar.model.Reserva;
+import com.Equipo2.RaceACar.model.Valoracion;
 import com.Equipo2.RaceACar.repository.AutoRepository;
 import com.Equipo2.RaceACar.repository.CategoriaRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -25,8 +27,11 @@ public class AutoService {
     @Autowired
     private AutoRepository repository;
     @Autowired
+    private ValoracionService valoracionService;
+    @Autowired
     private CategoriaRepository categoriaRepository;
-
+    @Autowired
+    private AutoRepository autoRepository;
     @Autowired
     private ModelMapper modelMapper;
     public void eliminarAuto(Long id){
@@ -73,10 +78,21 @@ public class AutoService {
         }
     }
 
-    public List<Auto> obtenerAutos (){
-        return repository.findAll();
-
+    public List<AutoDTO> obtenerAutos() {
+        List<Auto> autos = repository.findAll();
+        return autos.stream()
+                .map(auto -> {
+                    AutoDTO autoDTO = modelMapper.map(auto, AutoDTO.class);
+                    List<ValoracionDTO> valoracionDTOList = valoracionService.obtenerValoracionesPorIdAuto(auto.getId());
+                    if (!valoracionDTOList.isEmpty()) {
+                        autoDTO.setPromedio(valoracionService.obtenerPromedioValoracionPorAutoId(auto.getId()));
+                        autoDTO.setCantValoraciones(valoracionDTOList.size());
+                    }
+                    return autoDTO;
+                })
+                .collect(Collectors.toList());
     }
+
     public List<Auto> findAutosDisponiblesEntreFechas(LocalDate fechaInicio, LocalDate fechaFin) {
         return repository.findDisponibleBetweenFechas(fechaInicio, fechaFin);
     }
@@ -87,19 +103,29 @@ public class AutoService {
 
         repository.save(auto);
     }
-    public List<Auto> obtenerAutosDisponibles() {
+    public List<AutoDTO> obtenerAutosDisponiblesDTO() {
         List<Auto> autosDisponibles = repository.findByDisponibleTrue();
         if (autosDisponibles.isEmpty()) {
             throw new MailSendingException.ResourceNotFoundException("No se encontraron autos disponibles");
         }
-        return autosDisponibles;
+        return autosDisponibles.stream()
+                .map(auto -> {
+                    AutoDTO autoDTO = modelMapper.map(auto, AutoDTO.class);
+                    List<ValoracionDTO> valoracionDTOList = valoracionService.obtenerValoracionesPorIdAuto(auto.getId());
+                    if (!valoracionDTOList.isEmpty()) {
+
+                        autoDTO.setPromedio(valoracionService.obtenerPromedioValoracionPorAutoId(auto.getId()));
+                        autoDTO.setCantValoraciones(valoracionDTOList.size());
+                    }
+                    return autoDTO;
+                })
+                .collect(Collectors.toList());
     }
 
-    public List<Auto> obtenerAutosDisponiblesEntreFechas(LocalDate fechaInicio, LocalDate fechaFin) {
-        // Obtener todos los autos disponibles
+
+    public List<AutoDTO> obtenerAutosDisponiblesEntreFechas(LocalDate fechaInicio, LocalDate fechaFin) {
         List<Auto> autosDisponibles = repository.findByDisponibleTrue();
 
-        // Filtrar los autos que están disponibles dentro del rango de fechas
         autosDisponibles = autosDisponibles.stream()
                 .filter(auto -> estaDisponibleEnFechas(auto, fechaInicio, fechaFin))
                 .collect(Collectors.toList());
@@ -108,7 +134,18 @@ public class AutoService {
             throw new MailSendingException.ResourceNotFoundException("No se encontraron autos disponibles para las fechas especificadas");
         }
 
-        return autosDisponibles;
+        return autosDisponibles.stream()
+                .map(auto -> {
+                    AutoDTO autoDTO = modelMapper.map(auto, AutoDTO.class);
+                    List<ValoracionDTO> valoracionDTOList = valoracionService.obtenerValoracionesPorIdAuto(auto.getId());
+                    if (!valoracionDTOList.isEmpty()) {
+
+                        autoDTO.setPromedio(valoracionService.obtenerPromedioValoracionPorAutoId(auto.getId()));
+                        autoDTO.setCantValoraciones(valoracionDTOList.size());
+                    }
+                    return autoDTO;
+                })
+                .collect(Collectors.toList());
     }
 
     private boolean estaDisponibleEnFechas(Auto auto, LocalDate fechaInicio, LocalDate fechaFin) {
@@ -125,8 +162,7 @@ public class AutoService {
     }
 
 
-    @Autowired
-    private AutoRepository autoRepository;
+
 
     public Auto obtenerAutoPorId(Long id) {
         return autoRepository.findById(id).orElse(null);

@@ -26,9 +26,12 @@ public class AutoDTO {
     private Traccion traccion;
     private Combustion combustion;
 
-    private List<Items> items = new ArrayList<>();
+    //private List<Items> items = new ArrayList<>();
     private List<String> images = new ArrayList<>();
 
     private Double valor;
     private Boolean disponible;
+
+    private Double promedio;
+    private int cantValoraciones;
 }

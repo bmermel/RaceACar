@@ -1,5 +1,6 @@
 package com.Equipo2.RaceACar.controller;
 
+import com.Equipo2.RaceACar.DTO.AutoDTO;
 import com.Equipo2.RaceACar.DTO.CrearAutoDTO;
 import com.Equipo2.RaceACar.DTO.EditarAutoDTO;
 import com.Equipo2.RaceACar.Exceptions.MailSendingException;
@@ -75,40 +76,38 @@ public class AutoController {
 
     @GetMapping("/all")
     public ResponseEntity<?> obtenerAutos(@RequestHeader("idRol") RolUsuario idRol) {
-        if(idRol.getId()==2||idRol.getId()==3) {
+        if (idRol.getId() == 2 || idRol.getId() == 3) {
+            try {
+                List<AutoDTO> autosDTO = service.obtenerAutos();
 
-                try {
-                List<Auto> autos = service.obtenerAutos();
-
-                if (autos.isEmpty()) {
+                if (autosDTO.isEmpty()) {
                     return ResponseEntity.noContent().build();
                 } else {
-                    return ResponseEntity.ok(autos);
+                    return ResponseEntity.ok(autosDTO);
                 }
             } catch (Exception ex) {
                 System.err.println("Error al obtener la lista de autos: " + ex.getMessage());
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
             }
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No tienes permisos para realizar esta acción");
         }
-        else return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No tienes permisos para realizar esta acción");
     }
     @GetMapping("/disponibles")
-
-    //todos los users
-    public ResponseEntity<List<Auto>> obtenerAutosDisponibles() {
-
+    public ResponseEntity<List<AutoDTO>> obtenerAutosDisponibles() {
         try {
-            List<Auto> autosDisponibles = service.obtenerAutosDisponibles();
-            if (autosDisponibles.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            List<AutoDTO> autosDisponiblesDTO = service.obtenerAutosDisponiblesDTO();
+            if (autosDisponiblesDTO.isEmpty()) {
+                return ResponseEntity.notFound().build();
             }
-            return ResponseEntity.ok(autosDisponibles);
+            return ResponseEntity.ok(autosDisponiblesDTO);
         } catch (MailSendingException.ResourceNotFoundException ex) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            return ResponseEntity.notFound().build();
         } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
     @PatchMapping("/{id}/cambiar-disponibilidad")
     public ResponseEntity<?> toggleDisponiblidad(@PathVariable Long id, @RequestHeader("idRol") RolUsuario idRol){
         if(idRol.getId()==2||idRol.getId()==3) {
@@ -122,13 +121,13 @@ public class AutoController {
     }
 
     @GetMapping("/disponiblesPorFecha")
-    public ResponseEntity<List<Auto>> obtenerAutosDisponiblesEntreFechas(
+    public ResponseEntity<List<AutoDTO>> obtenerAutosDisponiblesEntreFechas(
             @RequestParam("fechaInicio") String fechaInicio,
             @RequestParam("fechaFin") String fechaFin
     ) {
         LocalDate fechaInicioParsed = LocalDate.parse(fechaInicio);
         LocalDate fechaFinParsed = LocalDate.parse(fechaFin);
-        List<Auto> autosDisponibles = service.obtenerAutosDisponiblesEntreFechas(fechaInicioParsed, fechaFinParsed);
+        List<AutoDTO> autosDisponibles = service.obtenerAutosDisponiblesEntreFechas(fechaInicioParsed, fechaFinParsed);
 
         if (autosDisponibles.isEmpty()) {
             return ResponseEntity.notFound().build();

@@ -150,8 +150,21 @@ public class ReservaService {
         List<Reserva> reservas = reservaRepository.findByUsuario(usuario);
 
         return reservas.stream()
-                .map(reserva -> modelMapper.map(reserva, ReservaDTO.class))
-                .collect(Collectors.toList());
+                .map(reserva -> {
+                    Valoracion valoracion = valoracionService.getValoracionPorReservaId(reserva.getId());
+                    ValoracionDTO valoracionDTO = mapper.convertValue(valoracion, ValoracionDTO.class);
+
+
+                    ReservaDTO reservaDTO = modelMapper.map(reserva, ReservaDTO.class);
+                    reservaDTO.setUsuario(mapper.convertValue(reserva.getUsuario(), UsuarioSinPassDTO.class));
+                    if(valoracionDTO != null){
+                        valoracionDTO.setNombre(reserva.getUsuario().getNombre());
+                        valoracionDTO.setApellido(reserva.getUsuario().getApellido());
+                    }
+                    reservaDTO.setValoracion(valoracionDTO);
+                    return reservaDTO;
+                })
+                    .collect(Collectors.toList());
     }
 
     public ReservaDTO obtenerUltimaReservaPorUsuario(Long usuarioId) {
