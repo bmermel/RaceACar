@@ -1,5 +1,6 @@
 package com.Equipo2.RaceACar.DTO;
 
+import com.Equipo2.RaceACar.model.Categoria;
 import com.Equipo2.RaceACar.model.Enums.Combustion;
 import com.Equipo2.RaceACar.model.Enums.TipoDeCaja;
 import com.Equipo2.RaceACar.model.Enums.Traccion;
@@ -18,7 +19,7 @@ public class AutoDTO {
     private String modelo;
     private String color;
 
-    private Long idCategoria;
+    private Categoria categoria;
     private int anio;
     private int capacidad;
     private TipoDeCaja tipoDeCaja;
