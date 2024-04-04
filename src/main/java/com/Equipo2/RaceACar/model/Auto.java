@@ -68,10 +68,10 @@ public class Auto {
     private Collection<String> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "auto", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties("auto")
+    @JsonIgnore
     private List<Reserva> reservas = new ArrayList<>();
     @ManyToMany
-    @JsonIgnoreProperties
+    @JsonIgnore
     @JoinTable(
             name = "auto_items",
             joinColumns = @JoinColumn(name = "auto_id"),
