@@ -81,4 +81,7 @@ public class ValoracionService {
         DecimalFormat df = new DecimalFormat("#.##");
         return Double.valueOf(df.format(valor));
     }
+    public Valoracion getValoracionPorReservaId(Long id){
+        return valoracionRepository.findByReservaId(id).orElse(null);
+    }
 }

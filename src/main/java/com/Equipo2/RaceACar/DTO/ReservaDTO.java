@@ -2,6 +2,7 @@ package com.Equipo2.RaceACar.DTO;
 
 import com.Equipo2.RaceACar.User.Usuario;
 import com.Equipo2.RaceACar.model.Auto;
+import com.Equipo2.RaceACar.model.Valoracion;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -21,5 +22,6 @@ public class ReservaDTO {
     private String entrega;
 
     private Double total;
-    private Usuario usuario;
+    private UsuarioSinPassDTO usuario;
+    private ValoracionDTO valoracion;
 }

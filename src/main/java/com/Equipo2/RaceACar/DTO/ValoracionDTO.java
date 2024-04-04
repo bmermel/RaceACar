@@ -17,5 +17,6 @@ public class ValoracionDTO {
     private Integer valoracion;
     private String resena;
     private LocalDate fechaResena;
-    private String nombreUsuario;
+    private String nombre;
+    private String apellido;
 }

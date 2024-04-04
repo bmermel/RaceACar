@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 
@@ -18,4 +19,6 @@ public interface ValoracionRepository extends JpaRepository<Valoracion, Long> {
 
     @Query("SELECT v FROM Valoracion v WHERE v.reserva.auto.id = :autoId")
     List<Valoracion> findByReservaAutoId(Long autoId);
+
+    Optional<Valoracion> findByReservaId(Long reservaId);
 }

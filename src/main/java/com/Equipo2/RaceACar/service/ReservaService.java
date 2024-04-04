@@ -2,11 +2,15 @@ package com.Equipo2.RaceACar.service;
 
 import com.Equipo2.RaceACar.DTO.AutoDTO;
 import com.Equipo2.RaceACar.DTO.ReservaDTO;
+import com.Equipo2.RaceACar.DTO.UsuarioSinPassDTO;
+import com.Equipo2.RaceACar.DTO.ValoracionDTO;
 import com.Equipo2.RaceACar.User.Usuario;
 import com.Equipo2.RaceACar.model.Auto;
 import com.Equipo2.RaceACar.model.Reserva;
+import com.Equipo2.RaceACar.model.Valoracion;
 import com.Equipo2.RaceACar.repository.AutoRepository;
 import com.Equipo2.RaceACar.repository.ReservaRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +33,10 @@ public class ReservaService {
     private AutoRepository autoRepository;
     @Autowired
     private MailService mailService;
+    @Autowired
+    private ObjectMapper mapper;
+    @Autowired
+    private ValoracionService valoracionService;
 
     public ReservaDTO crearReserva(Long autoId, LocalDate fechaComienzo, LocalDate fechaFin, String formaDePago, Usuario usuario, String recogida, String entrega) {
         Auto auto = autoRepository.findById(autoId).orElseThrow(() -> new EntityNotFoundException("Auto not found"));
@@ -81,8 +89,17 @@ public class ReservaService {
         } else {
             return reservaList.stream()
                     .map(reserva -> {
+                        Valoracion valoracion = valoracionService.getValoracionPorReservaId(reserva.getId());
+                        ValoracionDTO valoracionDTO = mapper.convertValue(valoracion, ValoracionDTO.class);
+
+
                         ReservaDTO reservaDTO = modelMapper.map(reserva, ReservaDTO.class);
-                        reservaDTO.setUsuario(reserva.getUsuario());
+                        reservaDTO.setUsuario(mapper.convertValue(reserva.getUsuario(), UsuarioSinPassDTO.class));
+                        if(valoracionDTO != null){
+                            valoracionDTO.setNombre(reserva.getUsuario().getNombre());
+                            valoracionDTO.setApellido(reserva.getUsuario().getApellido());
+                        }
+                        reservaDTO.setValoracion(valoracionDTO);
                         return reservaDTO;
                     })
                     .collect(Collectors.toList());

@@ -2,6 +2,7 @@ package com.Equipo2.RaceACar.model;
 
 
 import com.Equipo2.RaceACar.User.Usuario;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -39,6 +40,7 @@ public class Reserva {
     @Column(name = "Lugar_entrega", nullable = false)
     private String entrega;
     @Column(name = "valoracion")
+    @JsonIgnore
     @OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Valoracion> valoraciones = new ArrayList<>();
     @ManyToMany
