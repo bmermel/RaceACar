@@ -51,6 +51,8 @@ public class Reserva {
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
+    @Column(name = "Total a abonar", nullable = true)
 
+    private Double total;
 
 }

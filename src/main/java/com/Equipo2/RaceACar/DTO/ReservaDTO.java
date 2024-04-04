@@ -18,4 +18,7 @@ public class ReservaDTO {
 
     private String recogida;
     private String entrega;
+
+    private Double total;
+
 }

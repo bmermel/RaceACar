@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -29,7 +30,7 @@ public class ReservaService {
     @Autowired
     private MailService mailService;
 
-    public Reserva crearReserva(Long autoId, LocalDate fechaComienzo, LocalDate fechaFin, String formaDePago, Usuario usuario, String recogida, String entrega) {
+    public ReservaDTO crearReserva(Long autoId, LocalDate fechaComienzo, LocalDate fechaFin, String formaDePago, Usuario usuario, String recogida, String entrega) {
         Auto auto = autoRepository.findById(autoId).orElseThrow(() -> new EntityNotFoundException("Auto not found"));
 
         if (puedeReservar(auto, fechaComienzo, fechaFin)) {
@@ -41,15 +42,20 @@ public class ReservaService {
             reservation.setUsuario(usuario);
             reservation.setRecogida(recogida);
             reservation.setEntrega(entrega);
+            reservation.setTotal(calcularTotalReserva(fechaComienzo, fechaFin, auto));
             autoRepository.save(auto);
             System.out.println(auto);
             mailService.sendMailReservation(usuario.getEmail(),reservation);
-            return reservaRepository.save(reservation);
+            reservaRepository.save(reservation);
+            return modelMapper.map(reservation, ReservaDTO.class);
         } else {
             throw new IllegalArgumentException("El auto no está disponible para las fechas especificadas");
         }
     }
-
+    private Double calcularTotalReserva(LocalDate fechaComienzo, LocalDate fechaFin, Auto auto) {
+        long diasReserva = ChronoUnit.DAYS.between(fechaComienzo, fechaFin);
+        return diasReserva * auto.getValor();
+    }
     public boolean puedeReservar(Auto auto, LocalDate fechaComienzo, LocalDate fechaFin) {
         List<Reserva> reservations = reservaRepository.findByAuto(auto);
 

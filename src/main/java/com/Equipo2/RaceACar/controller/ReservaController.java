@@ -51,17 +51,17 @@ public class ReservaController {
     }
 
     @PostMapping("/crear")
-    public ResponseEntity<Reserva> crearReserva(@RequestBody CrearReservaDTO reservaDTO) {
+    public ResponseEntity<ReservaDTO> crearReserva(@RequestBody CrearReservaDTO reservaDTO) {
         try {
             Usuario usuario = mapper.convertValue(usuarioService.buscarPorEmail(reservaDTO.getEmail()), Usuario.class);
-            Reserva nuevaReserva = service.crearReserva(reservaDTO.getAutoId(), reservaDTO.getFechaComienzo(),
+            ReservaDTO nuevaReserva = service.crearReserva(reservaDTO.getAutoId(), reservaDTO.getFechaComienzo(),
                     reservaDTO.getFechaFin(), reservaDTO.getFormaDePago(), usuario, reservaDTO.getRecogida(),
                     reservaDTO.getEntrega());
             String mensaje = "Reserva realizada con éxito para el auto con ID " + reservaDTO.getAutoId() +
                     " desde " + reservaDTO.getFechaComienzo() + " hasta " + reservaDTO.getFechaFin();
             return ResponseEntity.ok(nuevaReserva);
-        } finally {
-
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
 
