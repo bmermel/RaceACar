@@ -80,7 +80,11 @@ public class ReservaService {
             return Collections.emptyList();
         } else {
             return reservaList.stream()
-                    .map(reserva -> modelMapper.map(reserva, ReservaDTO.class))
+                    .map(reserva -> {
+                        ReservaDTO reservaDTO = modelMapper.map(reserva, ReservaDTO.class);
+                        reservaDTO.setUsuario(reserva.getUsuario());
+                        return reservaDTO;
+                    })
                     .collect(Collectors.toList());
         }
     }
